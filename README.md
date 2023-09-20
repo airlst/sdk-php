@@ -16,3 +16,6 @@ Require the package.
 ``` bash
 composer require airlst/sdk-php
 ```
+
+### Todo
+- Add event resource
