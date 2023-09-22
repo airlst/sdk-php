@@ -15,7 +15,7 @@ class Guest extends Resource
 
     public function validateCode(string $code): array
     {
-        return $this->client->send("/api/events/{$this->eventId}/guests/validate-code", RequestMethod::POST, [
+        return $this->client->send("{$this->getEventURL()}/guests/validate-code", RequestMethod::POST, [
             'form_params' => ['code' => $code],
         ]);
     }
