@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AirLST\SdkPhp\Tests\Requests\Event;
 
-use AirLST\SdkPhp\CoreAPI;
+use AirLST\SdkPhp\CoreApi;
 use AirLST\SdkPhp\Requests\Event\GetRequest;
 use AirLST\SdkPhp\Requests\Event\ListRequest;
 use AirLST\SdkPhp\Resources\EventResource;
@@ -42,7 +42,7 @@ class EventResourceTest extends TestCase
         );
     }
 
-    protected function resource(CoreAPI $core): EventResource
+    protected function resource(CoreApi $core): EventResource
     {
         return new EventResource($core);
     }

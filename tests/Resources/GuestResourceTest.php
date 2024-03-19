@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AirLST\SdkPhp\Tests\Requests\Event;
 
-use AirLST\SdkPhp\CoreAPI;
+use AirLST\SdkPhp\CoreApi;
 use AirLST\SdkPhp\Requests\Guest\CreateRequest;
 use AirLST\SdkPhp\Requests\Guest\GetRequest;
 use AirLST\SdkPhp\Requests\Guest\UpdateRequest;
@@ -72,7 +72,7 @@ class GuestResourceTest extends TestCase
         );
     }
 
-    protected function resource(CoreAPI $core): GuestResource
+    protected function resource(CoreApi $core): GuestResource
     {
         return new GuestResource($core);
     }

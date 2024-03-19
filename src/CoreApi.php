@@ -8,7 +8,7 @@ use AirLST\SdkPhp\Resources\EventResource;
 use AirLST\SdkPhp\Resources\GuestResource;
 use Saloon\Http\Connector;
 
-class CoreAPI extends Connector
+class CoreApi extends Connector
 {
     protected string $baseUrl = 'https://airlst.app/api';
 

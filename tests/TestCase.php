@@ -11,7 +11,7 @@ use Saloon\Config;
 
 class TestCase extends BaseTestCase
 {
-    protected \AirLST\SdkPhp\CoreAPI $core;
+    protected \AirLST\SdkPhp\CoreApi $core;
 
     public function mock(string $class, array $expects = []): MockClient
     {
@@ -27,6 +27,6 @@ class TestCase extends BaseTestCase
         MockClient::destroyGlobal();
         Config::preventStrayRequests();
 
-        $this->core = new \AirLST\SdkPhp\CoreAPI('api-key');
+        $this->core = new \AirLST\SdkPhp\CoreApi('api-key');
     }
 }

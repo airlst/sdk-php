@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AirLST\SdkPhp\Tests\Requests\Guest;
 
-use AirLST\SdkPhp\CoreAPI;
+use AirLST\SdkPhp\CoreApi;
 use AirLST\SdkPhp\Requests\Guest\ValidateCodeRequest;
 use AirLST\SdkPhp\Tests\TestCase;
 
