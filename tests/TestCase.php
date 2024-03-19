@@ -4,22 +4,29 @@ declare(strict_types=1);
 
 namespace AirLST\SdkPhp\Tests;
 
-use AirLST\SdkPhp\CoreApi;
-use AirLST\SdkPhp\Resources\Event;
-use AirLST\SdkPhp\Resources\Guest;
-use GuzzleHttp\Handler\MockHandler;
-use GuzzleHttp\HandlerStack;
-use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase as BaseTestCase;
+use Saloon\Http\Faking\MockClient;
+use Saloon\Http\Faking\MockResponse;
+use Saloon\Config;
 
 class TestCase extends BaseTestCase
 {
-    protected CoreApi|Event|Guest $api;
+    protected \AirLST\SdkPhp\CoreApi $core;
 
-    protected function fake(array $expects, ?int $status = 200): void
+    public function mock(string $class, array $expects = []): MockClient
     {
-        $this->api->setHandler(HandlerStack::create(
-            new MockHandler([new Response($status, [], json_encode($expects))])
-        ));
+        return new MockClient([
+            $class => MockResponse::make($expects, 200),
+        ]);
+    }
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        MockClient::destroyGlobal();
+        Config::preventStrayRequests();
+
+        $this->core = new \AirLST\SdkPhp\CoreApi('api-key');
     }
 }
