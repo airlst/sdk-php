@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace AirLST\SdkPhp\Tests;
 
-use AirLST\SdkPhp\CoreAPI;
+use AirLST\SdkPhp\CoreApi;
 use AirLST\SdkPhp\Resources\EventResource;
 use AirLST\SdkPhp\Resources\GuestResource;
 
-class CoreAPITest extends TestCase
+class CoreApiTest extends TestCase
 {
     protected CoreAPI $core;
 
