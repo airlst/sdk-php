@@ -8,6 +8,7 @@ use AirLST\SdkPhp\CoreAPI;
 use PHPUnit\Framework\TestCase as BaseTestCase;
 use Saloon\Http\Faking\MockClient;
 use Saloon\Http\Faking\MockResponse;
+use Saloon\Config;
 
 class TestCase extends BaseTestCase
 {
@@ -23,7 +24,10 @@ class TestCase extends BaseTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        
+
+        MockClient::destroyGlobal();
+        Config::preventStrayRequests();
+
         $this->core = new CoreAPI('api-key');
     }
 }
