@@ -4,92 +4,44 @@ declare(strict_types=1);
 
 namespace AirLST\SdkPhp;
 
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\ClientException;
-use GuzzleHttp\HandlerStack;
+use AirLST\SdkPhp\Resources\EventResource;
+use AirLST\SdkPhp\Resources\GuestResource;
+use Saloon\Http\Connector;
 
-class CoreApi
+class CoreAPI extends Connector
 {
-    public string $baseURL = 'https://airlst.app';
-    public string $apiKey;
-    public string $locale = 'de-DE';
-    public string $eventId;
-    protected ?HandlerStack $handler = null;
+    protected string $baseUrl = 'https://airlst.app/api';
 
-    public function setBaseURL(string $baseURL): self
+    public function __construct(protected readonly string $apiKey) {}
+
+    public function resolveBaseUrl(): string
     {
-        $this->baseURL = $baseURL;
-
-        return $this;
+        return $this->baseUrl;
     }
 
-    public function setApiKey(string $apiKey): self
+    public function setBaseUrl(string $baseUrl): void
     {
-        $this->apiKey = $apiKey;
-
-        return $this;
+        $this->baseUrl = $baseUrl;
     }
 
-    public function setLocale(string $locale): self
+    public function event(): EventResource
     {
-        $this->locale = $locale;
-
-        return $this;
+        return new EventResource($this);
     }
 
-    public function setEventId(string $eventId): self
+    public function guest(string $eventId): GuestResource
     {
-        $this->eventId = $eventId;
+        $this->baseUrl = $this->baseUrl . "/events/{$eventId}/guests";
 
-        return $this;
+        return new GuestResource($this);
     }
 
-    /** 
-     * @return array<string, string>
-     */
-    public function getRequestHeaders(): array
+    protected function defaultHeaders(): array
     {
         return [
-            'content-type' => 'application/json',
-            'accept' => 'application/json',
-            'x-api-key' => $this->apiKey,
-            'accept-language' => $this->locale,
+            'Accept' => 'application/json',
+            'Content-Type' => 'application/json',
+            'X-Api-Key' => $this->apiKey
         ];
-    }
-
-    public function setHandler(HandlerStack $handler): void
-    {
-        $this->handler = $handler;
-    }
-
-    /**
-     * @param string $uri
-     * @param RequestMethod $method
-     * @param array<mixed> $options
-     * @return array<mixed>
-     */
-    public function send(
-        string $uri, 
-        RequestMethod $method = RequestMethod::GET, 
-        array $options = []
-    ): array
-    {        
-        try {
-            $client = new Client([
-                'base_uri' => $this->baseURL,
-                'headers' => $this->getRequestHeaders(),
-                'handler' => $this->handler
-            ]);
-
-            $response = $client->request($method->value, "/api$uri", $options);
-
-            return json_decode((string) $response->getBody(), true);
-        } catch (ClientException $exception) {
-            throw new \RuntimeException(
-                $exception->getResponse()->getBody()->getContents(),
-                $exception->getCode(),
-                $exception
-            );
-        }
     }
 }

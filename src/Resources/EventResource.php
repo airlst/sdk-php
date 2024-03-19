@@ -1,0 +1,24 @@
+<?php
+
+declare(strict_types=1);
+
+namespace AirLST\SdkPhp\Resources;
+
+use AirLST\SdkPhp\Contracts\EventResourceContract;
+use AirLST\SdkPhp\Requests\Event\GetRequest;
+use AirLST\SdkPhp\Requests\Event\ListRequest;
+use Saloon\Http\BaseResource;
+use Saloon\Http\Response;
+
+class EventResource extends BaseResource implements EventResourceContract
+{
+    public function list(): Response
+    {
+        return $this->connector->send(new ListRequest());
+    }
+
+    public function get(string $eventId): Response
+    {
+        return $this->connector->send(new GetRequest($eventId));
+    }
+}
