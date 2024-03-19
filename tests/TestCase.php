@@ -20,8 +20,10 @@ class TestCase extends BaseTestCase
         ]);
     }
 
-    public function setUp(): void
+    protected function setUp(): void
     {
+        parent::setUp();
+        
         $this->core = new CoreAPI('api-key');
     }
 }
