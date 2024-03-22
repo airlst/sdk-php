@@ -8,6 +8,8 @@ use Saloon\Http\Response;
 
 interface GuestResourceContract
 {
+    public function list(): Response;
+    
     public function validateCode(string $code): Response;
 
     public function get(string $code): Response;
