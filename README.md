@@ -3,10 +3,11 @@ This package is currently work in progress
 
 
 ### Installation
-First, you need to add it to your composer.json repositories array.
-``` json
-"repositories": [
-    {
+First, make sure you have the following requirements installed:
+- PHP (version X.X.X or higher)
+- Composer
+
+Next, you need to add the package to your composer.json repositories array.
         "type": "vcs",
         "url": "https://github.com/airlst/sdk-php.git"
     }

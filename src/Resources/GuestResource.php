@@ -7,16 +7,22 @@ namespace AirLST\SdkPhp\Resources;
 use AirLST\SdkPhp\Contracts\GuestResourceContract;
 use AirLST\SdkPhp\Requests\Guest\CreateRequest;
 use AirLST\SdkPhp\Requests\Guest\GetRequest;
+use AirLST\SdkPhp\Requests\Guest\ListRequest;
 use AirLST\SdkPhp\Requests\Guest\UpdateRequest;
+use AirLST\SdkPhp\Requests\Guest\ValidateCodeRequest;
 use Saloon\Http\BaseResource;
 use Saloon\Http\Response;
-use AirLST\SdkPhp\Requests\Guest\ValidateCodeRequest;
 
 class GuestResource extends BaseResource implements GuestResourceContract
 {
     public function validateCode(string $code): Response
     {
         return $this->connector->send(new ValidateCodeRequest($code));
+    }
+
+    public function list(): Response
+    {
+        return $this->connector->send(new ListRequest());
     }
 
     public function get(string $code): Response

@@ -22,7 +22,7 @@ class EventResourceTest extends TestCase
 
         $resource = $this->resource($this->core->withMockClient($mockClient));
         $result = $resource->list();
-
+        
         $mockClient->assertSent(
             fn (Request $request, Response $response) => $result->body() === $response->body()
         );
