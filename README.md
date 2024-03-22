@@ -1,5 +1,6 @@
+![example workflow](https://github.com/airlst/sdk-php/actions/workflows/ci.yml/badge.svg)
+
 # Core API SDK for PHP
-This package is currently work in progress
 
 ## Requirements
 - PHP 8.2
@@ -12,7 +13,7 @@ Add the package to your composer.json repositories array.
 "repositories": [
     {
         "type": "vcs",
-        "url": "https://github.com/airlst/sdk-php.git"
+        "url": "https://github.com/airlst/sdk-php"
     }
 ]
 ```
