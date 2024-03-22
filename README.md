@@ -8,15 +8,7 @@
 
 
 ## Installation
-Add the package to your composer.json repositories array.
-``` json
-"repositories": [
-    {
-        "type": "vcs",
-        "url": "https://github.com/airlst/sdk-php"
-    }
-]
-```
+
 Require the package.
 ``` bash
 composer require airlst/sdk-php
