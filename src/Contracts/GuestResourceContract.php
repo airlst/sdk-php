@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace AirLST\SdkPhp\Contracts;
 
+use Saloon\Contracts\ArrayStore;
 use Saloon\Http\Response;
 
 interface GuestResourceContract
 {
-    public function list(): Response;
+    public function list(array $query): Response;
     
     public function validateCode(string $code): Response;
 

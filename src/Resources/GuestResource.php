@@ -20,9 +20,9 @@ class GuestResource extends BaseResource implements GuestResourceContract
         return $this->connector->send(new ValidateCodeRequest($code));
     }
 
-    public function list(): Response
+    public function list(array $query = []): Response
     {
-        return $this->connector->send(new ListRequest());
+        return $this->connector->send(new ListRequest($query));
     }
 
     public function get(string $code): Response

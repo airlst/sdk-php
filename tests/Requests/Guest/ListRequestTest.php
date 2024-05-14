@@ -13,7 +13,7 @@ class ListRequestTest extends TestCase
     {
         $mockClient = $this->mock(ListRequest::class);
 
-        $this->core->withMockClient($mockClient)->send(new ListRequest());
+        $this->core->withMockClient($mockClient)->send(new ListRequest(['page' => 1]));
         
         $mockClient->assertSent(ListRequest::class);
     }

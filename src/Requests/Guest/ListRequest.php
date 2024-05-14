@@ -11,6 +11,8 @@ class ListRequest extends Request
 {
     protected Method $method = Method::GET;
 
+    public function __construct(protected array $additionalQuery) {}
+
     public function resolveEndpoint(): string
     {
         return '/'; 
@@ -19,7 +21,9 @@ class ListRequest extends Request
     protected function defaultQuery(): array
     {
         return [
+            'page' => 1,
             'perPage' => 100,
+            ...$this->additionalQuery,
         ];
     }
 }
