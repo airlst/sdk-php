@@ -11,6 +11,9 @@ class ListRequest extends Request
 {
     protected Method $method = Method::GET;
 
+    /**
+     * @param array<string, mixed> $additionalQuery
+     */
     public function __construct(protected array $additionalQuery) {}
 
     public function resolveEndpoint(): string

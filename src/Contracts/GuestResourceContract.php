@@ -9,6 +9,9 @@ use Saloon\Http\Response;
 
 interface GuestResourceContract
 {
+    /**
+     * @param array<string, mixed> $query
+     */
     public function list(array $query): Response;
     
     public function validateCode(string $code): Response;
