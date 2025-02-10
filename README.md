@@ -3,7 +3,7 @@
 # Core API SDK for PHP
 
 ## Requirements
-- PHP 8.2
+- PHP 8.4
 - Composer
 
 
