@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AirLST\SdkPhp;
 
+use AirLST\SdkPhp\Resources\EmailResource;
 use AirLST\SdkPhp\Resources\EventResource;
 use AirLST\SdkPhp\Resources\GuestResource;
 use Saloon\Http\Connector;
@@ -34,6 +35,13 @@ class CoreApi extends Connector
         $this->baseUrl = $this->baseUrl . "/events/{$eventId}/guests";
 
         return new GuestResource($this);
+    }
+
+    public function email(string $eventId): EmailResource
+    {
+        $this->baseUrl = $this->baseUrl . "/events/{$eventId}/emails/email-templates";
+
+        return new EmailResource($this);
     }
 
     protected function defaultHeaders(): array
