@@ -13,10 +13,14 @@ class TestCase extends BaseTestCase
 {
     protected \AirLST\SdkPhp\CoreApi $core;
 
-    public function mock(string $class, array $expects = []): MockClient
+    public function mock(
+        string $request, 
+        array $expects = [], 
+        int $status = 200
+    ): MockClient
     {
         return new MockClient([
-            $class => MockResponse::make($expects, 200),
+            $request => MockResponse::make($expects, $status),
         ]);
     }
 
