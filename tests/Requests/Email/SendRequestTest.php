@@ -9,7 +9,7 @@ use AirLST\SdkPhp\Tests\TestCase;
 
 class SendRequestTest extends TestCase
 {
-    public function testUpdate(): void
+    public function testSend(): void
     {
         $mockClient = $this->mock(SendRequest::class);
         
