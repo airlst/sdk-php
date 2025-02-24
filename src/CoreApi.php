@@ -32,6 +32,10 @@ class CoreApi extends Connector
 
     public function guest(string $eventId): GuestResource
     {
+        if (str($this->baseUrl)->contains("/events/{$eventId}/guests/")) {
+            return new GuestResource($this);
+        }
+        
         $this->baseUrl = $this->baseUrl . "/events/{$eventId}/guests";
 
         return new GuestResource($this);
@@ -39,6 +43,10 @@ class CoreApi extends Connector
 
     public function email(string $eventId): EmailResource
     {
+        if (str($this->baseUrl)->contains("/events/{$eventId}/emails/")) {
+            return new EmailResource($this);
+        }
+
         $this->baseUrl = $this->baseUrl . "/events/{$eventId}/emails/email-templates";
 
         return new EmailResource($this);
