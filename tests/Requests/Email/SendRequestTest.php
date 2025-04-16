@@ -17,11 +17,11 @@ class SendRequestTest extends TestCase
             ->withMockClient($mockClient)
             ->send(new SendRequest(
                 'email-template-uid', ['guests' => [
-                    "ABCD1234",
-                    "ABCD2345"
+                    'ABCD1234',
+                    'ABCD2345'
                 ]]
             ));
-        
+
         $mockClient->assertSent(SendRequest::class);
     }
 }

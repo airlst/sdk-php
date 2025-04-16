@@ -6,8 +6,9 @@ namespace AirLST\SdkPhp\Requests\Guest;
 
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
+use Saloon\PaginationPlugin\Contracts\Paginatable;
 
-class ListRequest extends Request
+class ListRequest extends Request implements Paginatable
 {
     protected Method $method = Method::GET;
 
@@ -18,7 +19,7 @@ class ListRequest extends Request
 
     public function resolveEndpoint(): string
     {
-        return '/'; 
+        return '/';
     }
 
     protected function defaultQuery(): array

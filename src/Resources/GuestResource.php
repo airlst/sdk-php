@@ -12,6 +12,7 @@ use AirLST\SdkPhp\Requests\Guest\UpdateRequest;
 use AirLST\SdkPhp\Requests\Guest\ValidateCodeRequest;
 use Saloon\Http\BaseResource;
 use Saloon\Http\Response;
+use Saloon\PaginationPlugin\PagedPaginator;
 
 class GuestResource extends BaseResource implements GuestResourceContract
 {
@@ -23,6 +24,11 @@ class GuestResource extends BaseResource implements GuestResourceContract
     public function list(array $query = []): Response
     {
         return $this->connector->send(new ListRequest($query));
+    }
+
+    public function listPaginated(array $query = []): PagedPaginator
+    {
+        return $this->connector->paginate(new ListRequest($query));
     }
 
     public function get(string $code): Response

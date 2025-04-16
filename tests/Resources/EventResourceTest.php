@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 
-namespace AirLST\SdkPhp\Tests\Resources\Event;
+namespace AirLST\SdkPhp\Tests\Resources;
 
 use AirLST\SdkPhp\CoreApi;
 use AirLST\SdkPhp\Requests\Event\GetRequest;
 use AirLST\SdkPhp\Requests\Event\ListRequest;
+use AirLST\SdkPhp\Requests\Event\SendEmailTemplateRequest;
 use AirLST\SdkPhp\Resources\EventResource;
 use AirLST\SdkPhp\Tests\TestCase;
 use Saloon\Http\Request;
@@ -22,7 +23,7 @@ class EventResourceTest extends TestCase
 
         $resource = $this->resource($this->core->withMockClient($mockClient));
         $result = $resource->list();
-        
+
         $mockClient->assertSent(
             fn (Request $request, Response $response) => $result->body() === $response->body()
         );
@@ -39,6 +40,25 @@ class EventResourceTest extends TestCase
 
         $mockClient->assertSent(
             fn (Request $request, Response $response) => $result->body() === $response->body()
+        );
+    }
+
+    public function testSendEmailTemplate(): void
+    {
+        $mockClient = $this->mock(request: SendEmailTemplateRequest::class, status: 204);
+
+        $resource = $this->resource($this->core->withMockClient($mockClient));
+        $result = $resource->sendEmailTemplate(
+            'event-id',
+            'email-template-id',
+            ['guests' => [
+                'ABCD1234',
+                'ABCD2345'
+            ]]
+        );
+
+        $mockClient->assertSent(
+            fn (Request $request, Response $response) => $request instanceof SendEmailTemplateRequest && $result->status() === $response->status()
         );
     }
 
