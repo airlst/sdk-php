@@ -8,8 +8,11 @@ use AirLST\SdkPhp\Resources\EmailResource;
 use AirLST\SdkPhp\Resources\EventResource;
 use AirLST\SdkPhp\Resources\GuestResource;
 use Saloon\Http\Connector;
+use Saloon\Http\Request;
+use Saloon\PaginationPlugin\Contracts\HasPagination;
+use Saloon\PaginationPlugin\PagedPaginator;
 
-class CoreApi extends Connector
+class CoreApi extends Connector implements HasPagination
 {
     protected string $baseUrl = 'https://airlst.app/api';
 
@@ -59,5 +62,10 @@ class CoreApi extends Connector
             'Content-Type' => 'application/json',
             'X-Api-Key' => $this->apiKey
         ];
+    }
+
+    public function paginate(Request $request): PagedPaginator
+    {
+        return new Paginator(connector: $this, request: $request);
     }
 }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AirLST\SdkPhp\Tests\Resources\Event;
+namespace AirLST\SdkPhp\Tests\Resources;
 
 use AirLST\SdkPhp\CoreApi;
 use AirLST\SdkPhp\Requests\Guest\CreateRequest;
@@ -23,7 +23,7 @@ class GuestResourceTest extends TestCase
 
         $resource = $this->resource($this->core->withMockClient($mockClient));
         $result = $resource->list();
-        
+
         $mockClient->assertSent(
             fn (Request $request, Response $response) => $request instanceof ListRequest && $result->body() === $response->body()
         );
@@ -35,9 +35,9 @@ class GuestResourceTest extends TestCase
 
         $resource = $this->resource($this->core->withMockClient($mockClient));
         $result = $resource->validateCode('xyz');
-        
+
         $mockClient->assertSent(
-            fn (Request $request, Response $response) => 
+            fn (Request $request, Response $response) =>
             $request instanceof ValidateCodeRequest && $result->body() === $response->body()
         );
     }
@@ -48,9 +48,9 @@ class GuestResourceTest extends TestCase
 
         $resource = $this->resource($this->core->withMockClient($mockClient));
         $result = $resource->get('xyz');
-        
+
         $mockClient->assertSent(
-            fn (Request $request, Response $response) => 
+            fn (Request $request, Response $response) =>
             $request instanceof GetRequest && $result->body() === $response->body()
         );
     }
@@ -65,9 +65,9 @@ class GuestResourceTest extends TestCase
             'email' => 'j.lennon@sdk.com',
             'status' => 'confirmed'
         ]);
-        
+
         $mockClient->assertSent(
-            fn (Request $request, Response $response) => 
+            fn (Request $request, Response $response) =>
             $request instanceof CreateRequest && $result->body() === $response->body()
         );
     }
@@ -78,9 +78,9 @@ class GuestResourceTest extends TestCase
 
         $resource = $this->resource($this->core->withMockClient($mockClient));
         $result = $resource->update('xyz', ['status' => 'confirmed']);
-        
+
         $mockClient->assertSent(
-            fn (Request $request, Response $response) => 
+            fn (Request $request, Response $response) =>
             $request instanceof UpdateRequest && $result->body() === $response->body()
         );
     }
