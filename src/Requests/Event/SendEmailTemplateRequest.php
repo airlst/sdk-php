@@ -15,6 +15,9 @@ class SendEmailTemplateRequest extends Request implements HasBody
 
     protected Method $method = Method::POST;
 
+    /**
+     * @param array<string, mixed> $data
+     */
     public function __construct(
         protected string $eventUuid,
         protected string $emailTemplateUuid,
@@ -26,6 +29,9 @@ class SendEmailTemplateRequest extends Request implements HasBody
         return "/events/{$this->eventUuid}/emails/email-templates/{$this->emailTemplateUuid}/send";
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function defaultBody(): array
     {
         return $this->data;

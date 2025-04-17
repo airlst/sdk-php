@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AirLST\SdkPhp\Resources;
 
 use AirLST\SdkPhp\Contracts\GuestResourceContract;
+use AirLST\SdkPhp\CoreApi;
 use AirLST\SdkPhp\Requests\Guest\CreateRequest;
 use AirLST\SdkPhp\Requests\Guest\GetRequest;
 use AirLST\SdkPhp\Requests\Guest\ListRequest;
@@ -14,6 +15,9 @@ use Saloon\Http\BaseResource;
 use Saloon\Http\Response;
 use Saloon\PaginationPlugin\PagedPaginator;
 
+/**
+ * @property CoreApi $connector
+ */
 class GuestResource extends BaseResource implements GuestResourceContract
 {
     public function validateCode(string $code): Response
@@ -26,6 +30,9 @@ class GuestResource extends BaseResource implements GuestResourceContract
         return $this->connector->send(new ListRequest($query));
     }
 
+    /**
+     * @param array<string, mixed> $query
+     */
     public function listPaginated(array $query = []): PagedPaginator
     {
         return $this->connector->paginate(new ListRequest($query));

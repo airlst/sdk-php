@@ -23,6 +23,9 @@ class EventResource extends BaseResource implements EventResourceContract
         return $this->connector->send(new GetRequest($eventId));
     }
 
+    /**
+     * @param array<string, mixed> $body
+     */
     public function sendEmailTemplate(string $eventUuid, string $emailTemplateUuid, array $body): Response
     {
         return $this->connector->send(new SendEmailTemplateRequest($eventUuid, $emailTemplateUuid, $body));
