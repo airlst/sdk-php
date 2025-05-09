@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AirLST\SdkPhp\Tests;
 
+use AirLST\SdkPhp\CoreApi;
 use PHPUnit\Framework\TestCase as BaseTestCase;
 use Saloon\Http\Faking\MockClient;
 use Saloon\Http\Faking\MockResponse;
@@ -11,11 +12,11 @@ use Saloon\Config;
 
 class TestCase extends BaseTestCase
 {
-    protected \AirLST\SdkPhp\CoreApi $core;
+    protected CoreApi $core;
 
     public function mock(
-        string $request, 
-        array $expects = [], 
+        string $request,
+        array $expects = [],
         int $status = 200
     ): MockClient
     {
@@ -31,6 +32,6 @@ class TestCase extends BaseTestCase
         MockClient::destroyGlobal();
         Config::preventStrayRequests();
 
-        $this->core = new \AirLST\SdkPhp\CoreApi('api-key');
+        $this->core = new CoreApi('api-key');
     }
 }
