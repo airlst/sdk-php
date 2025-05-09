@@ -6,6 +6,7 @@ namespace AirLST\SdkPhp\Tests\Resources;
 
 use AirLST\SdkPhp\CoreApi;
 use AirLST\SdkPhp\Requests\Guest\CreateRequest;
+use AirLST\SdkPhp\Requests\Guest\DeleteRequest;
 use AirLST\SdkPhp\Requests\Guest\GetRequest;
 use AirLST\SdkPhp\Requests\Guest\ListRequest;
 use AirLST\SdkPhp\Requests\Guest\UpdateRequest;
@@ -82,6 +83,19 @@ class GuestResourceTest extends TestCase
         $mockClient->assertSent(
             fn (Request $request, Response $response) =>
             $request instanceof UpdateRequest && $result->body() === $response->body()
+        );
+    }
+
+    public function testDelete(): void
+    {
+        $mockClient = $this->mock(DeleteRequest::class);
+
+        $resource = $this->resource($this->core->withMockClient($mockClient));
+        $result = $resource->delete('xyz');
+
+        $mockClient->assertSent(
+            fn (Request $request, Response $response) =>
+            $request instanceof DeleteRequest && $result->body() === $response->body()
         );
     }
 

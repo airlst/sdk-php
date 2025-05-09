@@ -7,6 +7,7 @@ namespace AirLST\SdkPhp\Resources;
 use AirLST\SdkPhp\Contracts\GuestResourceContract;
 use AirLST\SdkPhp\CoreApi;
 use AirLST\SdkPhp\Requests\Guest\CreateRequest;
+use AirLST\SdkPhp\Requests\Guest\DeleteRequest;
 use AirLST\SdkPhp\Requests\Guest\GetRequest;
 use AirLST\SdkPhp\Requests\Guest\ListRequest;
 use AirLST\SdkPhp\Requests\Guest\UpdateRequest;
@@ -51,5 +52,10 @@ class GuestResource extends BaseResource implements GuestResourceContract
     public function update(string $code, array $data): Response
     {
         return $this->connector->send(new UpdateRequest($code, $data));
+    }
+
+    public function delete(string $code): Response
+    {
+        return $this->connector->send(new DeleteRequest($code));
     }
 }
