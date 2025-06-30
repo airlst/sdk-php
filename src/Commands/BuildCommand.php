@@ -62,7 +62,7 @@ class BuildCommand extends Command
         }
 
         $config = new Config(
-            'AirLST',
+            'CoreApi',
             self::NAMESPACE,
         );
 

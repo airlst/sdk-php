@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace AirLST\SdkPhp\Generators;
 
+use AirLST\SdkPhp\Paginator;
+use AirLST\SdkPhp\Resources\EmailResource;
+use AirLST\SdkPhp\Resources\EventResource;
+use AirLST\SdkPhp\Resources\GuestResource;
 use Crescat\SaloonSdkGenerator\Data\Generator\ApiSpecification;
 use Crescat\SaloonSdkGenerator\Data\Generator\Endpoint;
 use Crescat\SaloonSdkGenerator\Generator;
@@ -12,6 +16,9 @@ use Exception;
 use Nette\PhpGenerator\ClassType;
 use Nette\PhpGenerator\PhpFile;
 use Saloon\Http\Connector;
+use Saloon\Http\Request;
+use Saloon\PaginationPlugin\Contracts\HasPagination;
+use Saloon\PaginationPlugin\PagedPaginator;
 
 use function is_null;
 use function sprintf;
@@ -27,6 +34,7 @@ class ConnectorGenerator extends Generator
     {
         $classType = new ClassType($this->config->connectorName);
         $classType->setExtends(Connector::class);
+        $classType->setImplements([HasPagination::class]);
 
         if ($specification->name !== null && $specification->name !== '' && $specification->name !== '0') {
             $classType->addComment($specification->name);
@@ -37,7 +45,6 @@ class ConnectorGenerator extends Generator
         }
 
         $classFile = new PhpFile();
-        $classFile->setStrictTypes();
 
         $constructor = $classType->addMethod('__construct');
         $constructor->addPromotedParameter('apiKey')
@@ -49,18 +56,78 @@ class ConnectorGenerator extends Generator
             throw new Exception('Base URL is required in the API specification.');
         }
 
+        $classType->addProperty('baseUrl')
+            ->setType('string')
+            ->setProtected()
+            ->setValue($specification->baseUrl);
+
         $classType->addMethod('resolveBaseUrl')
             ->setReturnType('string')
-            ->setBody("return '{$specification->baseUrl}';");
+            ->setBody('return $this->baseUrl;');
+
+        $classType->addMethod('setBaseUrl')
+            ->setReturnType('void')
+            ->setBody('$this->baseUrl = $baseUrl;')
+            ->addParameter('baseUrl')
+            ->setType('string');
 
         $classType->addMethod('defaultHeaders')
             ->setReturnType('array')
             ->setProtected()
             ->setBody('return [\'X-Api-Key\' => $this->apiKey];');
 
+        $classType->addMethod('paginate')
+            ->setReturnType(PagedPaginator::class)
+            ->setBody('return new Paginator(connector: $this, request: $request);')
+            ->addParameter('request')
+            ->setType(Request::class);
+
+        $classType->addMethod('event')
+            ->addComment('@deprecated Use the "events" resource instead.')
+            ->setReturnType(EventResource::class)
+            ->setBody('return new EventResource($this);');
+
+        $classType->addMethod('guest')
+            ->addComment('@deprecated Use the "guests" resource instead.')
+            ->setReturnType(GuestResource::class)
+            ->setBody('
+                if (str($this->baseUrl)->contains("/events/{$eventId}/guests/")) { // @phpstan-ignore-line
+                    return new GuestResource($this);
+                }
+
+                $this->baseUrl .= "/events/{$eventId}/guests";
+
+                return new GuestResource($this);
+            ')
+            ->addParameter('eventId')
+            ->setType('string');
+
+        $classType->addMethod('email')
+            ->addComment('@deprecated Use the "emails" resource instead.')
+            ->setReturnType(EmailResource::class)
+            ->setBody('
+                if (str($this->baseUrl)->contains("/events/{$eventId}/emails/")) {  // @phpstan-ignore-line
+                    return new EmailResource($this);
+                }
+
+               $this->baseUrl .= "/events/{$eventId}/emails/email-templates";
+
+                 return new EmailResource($this);
+            ')
+            ->addParameter('eventId')
+            ->setType('string');
+
         $namespace = $classFile
+            ->setStrictTypes()
             ->addNamespace("{$this->config->namespace}")
-            ->addUse(Connector::class);
+            ->addUse(Connector::class)
+            ->addUse(Request::class)
+            ->addUse(HasPagination::class)
+            ->addUse(PagedPaginator::class)
+            ->addUse(Paginator::class)
+            ->addUse(EventResource::class)
+            ->addUse(GuestResource::class)
+            ->addUse(EmailResource::class);
 
         $collections = collect($specification->endpoints)
             ->map(fn (Endpoint $endpoint): string => NameHelper::connectorClassName($endpoint->collection !== null && $endpoint->collection !== '' && $endpoint->collection !== '0' ? $endpoint->collection : $this->config->fallbackResourceName)) // @phpstan-ignore-line

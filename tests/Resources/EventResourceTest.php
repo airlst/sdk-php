@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AirLST\SdkPhp\Tests\Resources;
 
-use AirLST\SdkPhp\CoreApi;
+use AirLST\SdkPhp\Client\CoreApi;
 use AirLST\SdkPhp\Requests\Event\GetRequest;
 use AirLST\SdkPhp\Requests\Event\ListRequest;
 use AirLST\SdkPhp\Requests\Event\SendEmailTemplateRequest;

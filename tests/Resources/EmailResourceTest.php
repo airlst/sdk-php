@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AirLST\SdkPhp\Tests\Resources;
 
-use AirLST\SdkPhp\CoreApi;
+use AirLST\SdkPhp\Client\CoreApi;
 use AirLST\SdkPhp\Requests\Email\SendRequest;
 use AirLST\SdkPhp\Resources\EmailResource;
 use AirLST\SdkPhp\Tests\TestCase;

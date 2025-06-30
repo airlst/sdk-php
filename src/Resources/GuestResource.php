@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace AirLST\SdkPhp\Resources;
 
+use AirLST\SdkPhp\Client\CoreApi;
 use AirLST\SdkPhp\Contracts\GuestResourceContract;
-use AirLST\SdkPhp\CoreApi;
 use AirLST\SdkPhp\Requests\Guest\CreateRequest;
 use AirLST\SdkPhp\Requests\Guest\DeleteRequest;
 use AirLST\SdkPhp\Requests\Guest\GetRequest;
