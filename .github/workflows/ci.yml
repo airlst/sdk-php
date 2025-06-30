@@ -133,9 +133,9 @@ jobs:
       - name: Run phpstan
         run: ./vendor/bin/phpstan analyse -c phpstan.php --error-format=github
 
-  pest:
+  phpunit:
     needs: [ phpstan ]
-    name: Tests (pest)
+    name: Tests (phpunit)
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
