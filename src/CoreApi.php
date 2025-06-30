@@ -38,7 +38,7 @@ class CoreApi extends Connector implements HasPagination
         if (str($this->baseUrl)->contains("/events/{$eventId}/guests/")) {
             return new GuestResource($this);
         }
-        
+
         $this->baseUrl .= "/events/{$eventId}/guests";
 
         return new GuestResource($this);
@@ -55,17 +55,17 @@ class CoreApi extends Connector implements HasPagination
         return new EmailResource($this);
     }
 
+    public function paginate(Request $request): PagedPaginator
+    {
+        return new Paginator(connector: $this, request: $request);
+    }
+
     protected function defaultHeaders(): array
     {
         return [
             'Accept' => 'application/json',
             'Content-Type' => 'application/json',
-            'X-Api-Key' => $this->apiKey
+            'X-Api-Key' => $this->apiKey,
         ];
-    }
-
-    public function paginate(Request $request): PagedPaginator
-    {
-        return new Paginator(connector: $this, request: $request);
     }
 }

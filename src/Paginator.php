@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AirLST\SdkPhp;
 
 use Saloon\Http\Request;
