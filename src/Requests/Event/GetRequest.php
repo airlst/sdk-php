@@ -15,6 +15,6 @@ class GetRequest extends Request
 
     public function resolveEndpoint(): string
     {
-        return '/events/' . $this->eventId; 
+        return '/events/' . $this->eventId;
     }
 }

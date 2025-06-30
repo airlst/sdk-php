@@ -7,7 +7,10 @@ namespace AirLST\SdkPhp\Tests\Requests\Event;
 use AirLST\SdkPhp\Requests\Event\GetRequest;
 use AirLST\SdkPhp\Tests\TestCase;
 
-class GetRequestTest extends TestCase
+/**
+ * @internal
+ */
+final class GetRequestTest extends TestCase
 {
     public function testResolveEndpoint(): void
     {
@@ -20,7 +23,7 @@ class GetRequestTest extends TestCase
         $mockClient = $this->mock(GetRequest::class);
 
         $this->core->withMockClient($mockClient)->send(new GetRequest('event-id'));
-        
+
         $mockClient->assertSent(GetRequest::class);
     }
 }

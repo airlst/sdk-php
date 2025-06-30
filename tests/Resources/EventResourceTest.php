@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AirLST\SdkPhp\Tests\Resources\Event;
+namespace AirLST\SdkPhp\Tests\Resources;
 
 use AirLST\SdkPhp\CoreApi;
 use AirLST\SdkPhp\Requests\Event\GetRequest;
@@ -12,7 +12,10 @@ use AirLST\SdkPhp\Tests\TestCase;
 use Saloon\Http\Request;
 use Saloon\Http\Response;
 
-class EventResourceTest extends TestCase
+/**
+ * @internal
+ */
+final class EventResourceTest extends TestCase
 {
     public function testList(): void
     {
@@ -22,9 +25,9 @@ class EventResourceTest extends TestCase
 
         $resource = $this->resource($this->core->withMockClient($mockClient));
         $result = $resource->list();
-        
+
         $mockClient->assertSent(
-            fn (Request $request, Response $response) => $result->body() === $response->body()
+            fn (Request $request, Response $response): bool => $result->body() === $response->body()
         );
     }
 
@@ -38,11 +41,11 @@ class EventResourceTest extends TestCase
         $result = $resource->get($expects['data']['event']['id']);
 
         $mockClient->assertSent(
-            fn (Request $request, Response $response) => $result->body() === $response->body()
+            fn (Request $request, Response $response): bool => $result->body() === $response->body()
         );
     }
 
-    protected function resource(CoreApi $core): EventResource
+    private function resource(CoreApi $core): EventResource
     {
         return new EventResource($core);
     }

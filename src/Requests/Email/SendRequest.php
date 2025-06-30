@@ -12,7 +12,7 @@ use Saloon\Traits\Body\HasJsonBody;
 class SendRequest extends Request implements HasBody
 {
     use HasJsonBody;
-    
+
     protected Method $method = Method::POST;
 
     /**
@@ -22,7 +22,7 @@ class SendRequest extends Request implements HasBody
 
     public function resolveEndpoint(): string
     {
-        return '/' . $this->uuid . '/send'; 
+        return '/' . $this->uuid . '/send';
     }
 
     /**

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AirLST\SdkPhp\Tests\Resources\Event;
+namespace AirLST\SdkPhp\Tests\Resources;
 
 use AirLST\SdkPhp\CoreApi;
 use AirLST\SdkPhp\Requests\Guest\CreateRequest;
@@ -15,7 +15,10 @@ use AirLST\SdkPhp\Tests\TestCase;
 use Saloon\Http\Request;
 use Saloon\Http\Response;
 
-class GuestResourceTest extends TestCase
+/**
+ * @internal
+ */
+final class GuestResourceTest extends TestCase
 {
     public function testList(): void
     {
@@ -23,9 +26,9 @@ class GuestResourceTest extends TestCase
 
         $resource = $this->resource($this->core->withMockClient($mockClient));
         $result = $resource->list();
-        
+
         $mockClient->assertSent(
-            fn (Request $request, Response $response) => $request instanceof ListRequest && $result->body() === $response->body()
+            fn (Request $request, Response $response): bool => $request instanceof ListRequest && $result->body() === $response->body()
         );
     }
 
@@ -35,10 +38,9 @@ class GuestResourceTest extends TestCase
 
         $resource = $this->resource($this->core->withMockClient($mockClient));
         $result = $resource->validateCode('xyz');
-        
+
         $mockClient->assertSent(
-            fn (Request $request, Response $response) => 
-            $request instanceof ValidateCodeRequest && $result->body() === $response->body()
+            fn (Request $request, Response $response): bool => $request instanceof ValidateCodeRequest && $result->body() === $response->body()
         );
     }
 
@@ -48,10 +50,9 @@ class GuestResourceTest extends TestCase
 
         $resource = $this->resource($this->core->withMockClient($mockClient));
         $result = $resource->get('xyz');
-        
+
         $mockClient->assertSent(
-            fn (Request $request, Response $response) => 
-            $request instanceof GetRequest && $result->body() === $response->body()
+            fn (Request $request, Response $response): bool => $request instanceof GetRequest && $result->body() === $response->body()
         );
     }
 
@@ -63,12 +64,11 @@ class GuestResourceTest extends TestCase
         $result = $resource->create([
             'name' => 'John Lennon',
             'email' => 'j.lennon@sdk.com',
-            'status' => 'confirmed'
+            'status' => 'confirmed',
         ]);
-        
+
         $mockClient->assertSent(
-            fn (Request $request, Response $response) => 
-            $request instanceof CreateRequest && $result->body() === $response->body()
+            fn (Request $request, Response $response): bool => $request instanceof CreateRequest && $result->body() === $response->body()
         );
     }
 
@@ -78,14 +78,13 @@ class GuestResourceTest extends TestCase
 
         $resource = $this->resource($this->core->withMockClient($mockClient));
         $result = $resource->update('xyz', ['status' => 'confirmed']);
-        
+
         $mockClient->assertSent(
-            fn (Request $request, Response $response) => 
-            $request instanceof UpdateRequest && $result->body() === $response->body()
+            fn (Request $request, Response $response): bool => $request instanceof UpdateRequest && $result->body() === $response->body()
         );
     }
 
-    protected function resource(CoreApi $core): GuestResource
+    private function resource(CoreApi $core): GuestResource
     {
         return new GuestResource($core);
     }

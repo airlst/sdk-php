@@ -13,6 +13,6 @@ class ListRequest extends Request
 
     public function resolveEndpoint(): string
     {
-        return '/companies/events'; 
+        return '/companies/events';
     }
 }

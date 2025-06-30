@@ -12,7 +12,7 @@ use Saloon\Traits\Body\HasJsonBody;
 class UpdateRequest extends Request implements HasBody
 {
     use HasJsonBody;
-    
+
     protected Method $method = Method::PUT;
 
     /**
@@ -22,7 +22,7 @@ class UpdateRequest extends Request implements HasBody
 
     public function resolveEndpoint(): string
     {
-        return '/' . $this->code; 
+        return '/' . $this->code;
     }
 
     /**

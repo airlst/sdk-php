@@ -9,9 +9,12 @@ use AirLST\SdkPhp\Resources\EmailResource;
 use AirLST\SdkPhp\Resources\EventResource;
 use AirLST\SdkPhp\Resources\GuestResource;
 
+/**
+ * @internal
+ */
 class CoreApiTest extends TestCase
 {
-    protected CoreAPI $core;
+    protected CoreApi $core;
 
     public function testResolveBaseUrl(): void
     {
@@ -19,7 +22,7 @@ class CoreApiTest extends TestCase
 
         $this->core->setBaseUrl($baseUrl);
 
-        $this->assertEquals($baseUrl, $this->core->resolveBaseUrl());
+        $this->assertSame($baseUrl, $this->core->resolveBaseUrl());
     }
 
     public function testEvent(): void
@@ -30,7 +33,7 @@ class CoreApiTest extends TestCase
     public function testGuest(): void
     {
         $this->assertInstanceOf(
-            GuestResource::class, 
+            GuestResource::class,
             $this->core->guest('event-id')
         );
     }
@@ -38,7 +41,7 @@ class CoreApiTest extends TestCase
     public function testEmail(): void
     {
         $this->assertInstanceOf(
-            EmailResource::class, 
+            EmailResource::class,
             $this->core->email('event-id')
         );
     }

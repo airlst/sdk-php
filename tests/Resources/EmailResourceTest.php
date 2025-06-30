@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AirLST\SdkPhp\Tests\Resources\Email;
+namespace AirLST\SdkPhp\Tests\Resources;
 
 use AirLST\SdkPhp\CoreApi;
 use AirLST\SdkPhp\Requests\Email\SendRequest;
@@ -11,7 +11,10 @@ use AirLST\SdkPhp\Tests\TestCase;
 use Saloon\Http\Request;
 use Saloon\Http\Response;
 
-class EmailResourceTest extends TestCase
+/**
+ * @internal
+ */
+final class EmailResourceTest extends TestCase
 {
     public function testSend(): void
     {
@@ -19,17 +22,16 @@ class EmailResourceTest extends TestCase
 
         $resource = $this->resource($this->core->withMockClient($mockClient));
         $result = $resource->send('email-template-uid', ['guests' => [
-            "ABCD1234",
-            "ABCD2345"
+            'ABCD1234',
+            'ABCD2345',
         ]]);
-        
+
         $mockClient->assertSent(
-            fn (Request $request, Response $response) => 
-            $request instanceof SendRequest && $result->status() === $response->status()
+            fn (Request $request, Response $response): bool => $request instanceof SendRequest && $result->status() === $response->status()
         );
     }
 
-    protected function resource(CoreApi $core): EmailResource
+    private function resource(CoreApi $core): EmailResource
     {
         return new EmailResource($core);
     }

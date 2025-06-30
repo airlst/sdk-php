@@ -1,0 +1,1288 @@
+openapi: 3.0.0
+info:
+  title: 'AirLST API'
+  termsOfService: 'https://airlst.app/terms-of-use'
+  contact:
+    name: 'AirLST Support'
+    url: 'https://support.airlst.app'
+    email: support@airlst.app
+  version: '0.1'
+servers:
+  -
+    url: 'https://airlst.app'
+    description: 'AirLST API server'
+paths:
+  '/api/events/{EventUuid}/bookables/groups/{BookableGroupUuid}/objects/{BookableUuid}/availability':
+    post:
+      tags:
+        - BookableGroups
+      summary: 'List availabilities for bookable object'
+      operationId: getAvailabilities
+      parameters:
+        -
+          $ref: '#/components/parameters/X-Api-Key'
+        -
+          $ref: '#/components/parameters/EventUuid'
+        -
+          $ref: '#/components/parameters/BookableGroupUuid'
+        -
+          $ref: '#/components/parameters/BookableUuid'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              required:
+                - start_date
+                - end_date
+              properties:
+                start_date:
+                  description: 'Start date'
+                  type: string
+                  format: date-time
+                  example: '2025-02-04 13:11:46'
+                end_date:
+                  description: 'End date'
+                  type: string
+                  format: date-time
+                  example: '2025-02-04 13:11:46'
+              type: object
+      responses:
+        '200':
+          description: 'Successful response'
+          content:
+            application/json:
+              schema: {  }
+              examples:
+                'Availabilities list':
+                  summary: 'Availabilities list'
+                  value: { data: { availabilities: [{ starts_at: '2025-02-04 13:11:46', ends_at: '2025-02-04 13:51:46', min: 30, max: 60, buffer_time: 10, reservations: [{ id: 1efe2ef0-3306-645e-836d-0242c0a89e06, starts_at: '2025-02-04 12:56:05', ends_at: '2025-02-04 14:56:05', checkin: null }] }, { starts_at: '2025-02-05 13:11:46', ends_at: '2025-02-05 13:51:46', min: 30, max: 60, buffer_time: 10 }] } }
+      servers:
+        -
+          url: 'https://airlst.app'
+  '/api/events/{EventUuid}/bookables/guests/{GuestCode}/reservations/{ReservationUuid}':
+    delete:
+      tags:
+        - BookableGroups
+      summary: 'Delete bookables reservation'
+      operationId: deleteBookablesReservation
+      parameters:
+        -
+          $ref: '#/components/parameters/X-Api-Key'
+        -
+          $ref: '#/components/parameters/EventUuid'
+        -
+          $ref: '#/components/parameters/GuestCode'
+        -
+          $ref: '#/components/parameters/ReservationUuid'
+      responses:
+        '200':
+          description: 'Successful response'
+      servers:
+        -
+          url: 'https://airlst.app'
+  '/api/events/{EventUuid}/bookables/groups':
+    get:
+      tags:
+        - BookableGroups
+      summary: 'List bookable groups for an event'
+      operationId: listBookableGroups
+      parameters:
+        -
+          $ref: '#/components/parameters/X-Api-Key'
+        -
+          $ref: '#/components/parameters/EventUuid'
+      responses:
+        '200':
+          description: 'Successful response'
+          content:
+            application/json:
+              schema: {  }
+              examples:
+                'List bookable groups':
+                  summary: 'List bookable groups'
+                  value: { data: { bookableGroups: [{ id: 1efd1ac1-8a51-6702-9129-0242c0a89e06, name: 'sit sed', type: bookable.groups.type.cars, description: 'Minus incidunt sunt adipisci non rerum. Et saepe tempora debitis aperiam optio. Officia quod tenetur debitis sint provident reprehenderit consequatur.', create_reservation_on_checkin: false, max_number_of_reservations: 1, created_at: '2025-01-13T12:44:14.000000Z', updated_at: '2025-01-13T12:44:14.000000Z', extended_fields: [{ id: 1f02a6f9-59d9-6baa-ae7a-2ed9a2ad4652, model: carBookable, label: { en-GB: 'Test field', de-DE: 'Test field' }, key: test_field, type: string, rules: null, default_value: '' }] }, { id: 1efd1ac1-8a4e-6282-af75-0242c0a89e06, name: 'earum enim', type: bookable.groups.type.cars, description: 'Est quia dolores corrupti officiis quas. Minima magnam ex voluptates quis nesciunt ab. Adipisci suscipit nesciunt est suscipit amet aut.', create_reservation_on_checkin: false, max_number_of_reservations: 1, created_at: '2025-01-13T12:44:14.000000Z', updated_at: '2025-01-13T12:44:14.000000Z' }] }, meta: { pagination: { perPage: 100, currentPage: 1, totalPages: 1, totalEntries: 2 }, timestamp: 1736772255 } }
+      servers:
+        -
+          url: 'https://airlst.app'
+  '/api/events/{EventUuid}/bookables/groups/{BookableGroupUuid}':
+    get:
+      tags:
+        - BookableGroups
+      summary: 'List bookables for a group'
+      operationId: listBookablesForGroup
+      parameters:
+        -
+          $ref: '#/components/parameters/X-Api-Key'
+        -
+          $ref: '#/components/parameters/EventUuid'
+        -
+          $ref: '#/components/parameters/BookableGroupUuid'
+      responses:
+        '200':
+          description: 'Successful response'
+          content:
+            application/json:
+              schema: {  }
+              examples:
+                'List bookables':
+                  summary: 'List bookables'
+                  value: { data: { bookables: [{ id: 1efd1b60-4695-6bf4-bf13-0242c0a89e06, name: et, description: null, code: 'BO:1efd1b60-4652-6dcc-9224-0242c0a89e06:1efd1b60-4695-6bf4-bf13-0242c0a89e06', make: Volkswagen, model: Polo, year: 2023, color: PaleGoldenRod, license_plate: ot537gc, fuel_type: null, extended_fields: null, created_at: '2025-01-13T13:55:16.000000Z', updated_at: '2025-01-13T13:55:16.000000Z', reservations: [{ id: 1efe2ef0-3303-6146-9885-0242c0a89e06, starts_at: '2025-02-04 12:56:05', ends_at: '2025-02-04 14:56:05', guest: { id: 1efe2ef0-32f4-642a-b5e2-0242c0a89e06, code: 5I1GBBN4, role: main, status: cancelled, current_companions_count: null, max_companions: null, extended_fields: [], created_at: '2025-02-04T11:56:05.000000Z', updated_at: '2025-02-04T11:56:05.000000Z', recommender_id: null }, checkin: null }] }, { id: 1efd1b60-4693-6250-b9b3-0242c0a89e06, name: et, description: null, code: 'BO:1efd1b60-4652-6dcc-9224-0242c0a89e06:1efd1b60-4693-6250-b9b3-0242c0a89e06', make: Mercedes, model: 'C Classe', year: 2017, color: MediumSlateBlue, license_plate: io358jz, fuel_type: null, extended_fields: null, created_at: '2025-01-13T13:55:16.000000Z', updated_at: '2025-01-13T13:55:16.000000Z', reservations: [{ id: 1efe2ef0-3306-645e-836d-0242c0a89e06, starts_at: '2025-02-04 12:56:05', ends_at: '2025-02-04 14:56:05', guest: { id: 1efe2ef0-32f4-642a-b5e2-0242c0a89e06, code: 5I1GBBN4, role: main, status: cancelled, current_companions_count: null, max_companions: null, extended_fields: [], created_at: '2025-02-04T11:56:05.000000Z', updated_at: '2025-02-04T11:56:05.000000Z', recommender_id: null }, checkin: null }] }, { id: 1efd1b60-468f-6c90-93cb-0242c0a89e06, name: sed, description: null, code: 'BO:1efd1b60-4652-6dcc-9224-0242c0a89e06:1efd1b60-468f-6c90-93cb-0242c0a89e06', make: Mercedes, model: 'S Classe', year: 2022, color: Green, license_plate: at461eg, fuel_type: null, extended_fields: null, created_at: '2025-01-13T13:55:16.000000Z', updated_at: '2025-01-13T13:55:16.000000Z', reservations: [] }] }, meta: { pagination: { perPage: 100, currentPage: 1, totalPages: 1, totalEntries: 3 }, timestamp: 1736776520 } }
+      servers:
+        -
+          url: 'https://airlst.app'
+  '/api/events/{EventUuid}/bookables/groups/{BookableGroupUuid}/reservations':
+    post:
+      tags:
+        - BookableGroups
+      summary: 'Store bookables reservations'
+      operationId: storeBookablesReservations
+      parameters:
+        -
+          $ref: '#/components/parameters/X-Api-Key'
+        -
+          $ref: '#/components/parameters/EventUuid'
+        -
+          $ref: '#/components/parameters/BookableGroupUuid'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              required:
+                - guest_code
+                - reservations
+              properties:
+                guest_code:
+                  description: 'A valid guest code that exists in the event’s bookings'
+                  type: string
+                  example: ABCD1234
+                reservations:
+                  type: array
+                  items: { required: [starts_at, ends_at, bookable_id], properties: { starts_at: { description: 'Start date of the reservation', type: string, format: date-time, example: '2025-02-04 13:11:46' }, ends_at: { description: 'End date of the reservation', type: string, format: date-time, example: '2025-02-04 13:11:46' }, bookable_id: { description: 'UUID of the bookable item', type: string, format: uuid, example: 1efe2f29-a248-689c-9cda-0242c0a89e06 } }, type: object }
+              type: object
+      responses:
+        '200':
+          description: 'Successful response'
+          content:
+            application/json:
+              schema: {  }
+              examples:
+                'Store reservation':
+                  summary: 'Store reservation'
+                  value: { data: { reservations: [{ id: 1efe2f29-a248-689c-9cda-0242c0a89e06, starts_at: '2025-02-04 13:11:46', ends_at: '2025-02-04 13:51:46' }, { id: 1efe2f29-a248-689c-9cda-0242c0a89e07, starts_at: '2025-02-05 13:11:46', ends_at: '2025-02-05 13:51:46' }] } }
+      servers:
+        -
+          url: 'https://airlst.app'
+  '/api/events/{EventUuid}/guests/{GuestCode}/archive':
+    put:
+      tags:
+        - Guests
+      summary: 'Archive guest'
+      operationId: archiveGuest
+      parameters:
+        -
+          $ref: '#/components/parameters/X-Api-Key'
+        -
+          $ref: '#/components/parameters/EventUuid'
+        -
+          $ref: '#/components/parameters/GuestCode'
+      responses:
+        '204':
+          description: 'Successful response'
+      servers:
+        -
+          url: 'https://airlst.app'
+  '/api/events/{EventUuid}/guests/{GuestCode}/checkins':
+    post:
+      tags:
+        - Guests
+      summary: 'Create a guest checkin'
+      operationId: checkinGuest
+      parameters:
+        -
+          $ref: '#/components/parameters/X-Api-Key'
+        -
+          $ref: '#/components/parameters/EventUuid'
+        -
+          $ref: '#/components/parameters/GuestCode'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              required:
+                - type
+                - timestamp
+              properties:
+                type:
+                  description: 'The type of checkin'
+                  type: string
+                  example: check-in
+                  oneOf: [{ type: string, enum: [check-in, check-out] }]
+                timestamp:
+                  description: 'Checkin/Checkout timestamp in unix timestamp format'
+                  type: integer
+                  format: epoch
+                device:
+                  description: 'Checkin/Checkout device identifier'
+                  type: string
+                location:
+                  description: 'Checkin/Checkout location identifier'
+                  type: string
+              type: object
+      responses:
+        '200':
+          description: 'Successful response'
+          content:
+            application/json:
+              schema: {  }
+              examples:
+                'Guest response with checkins':
+                  summary: 'Guest response with checkins'
+                  value: { data: { guest: { code: ABCD1234, role: main, status: confirmed, extended_fields: { field1: value1, field2: value2 }, booking: { extended_fields: { field1: value1, field2: value2 } }, contact: { extended_fields: { field1: value1, field2: value2 } }, checkins: [{ type: check-in, timestamp: '2024-03-15 11:28:36', device: device1, location: location1 }] } } }
+      servers:
+        -
+          url: 'https://airlst.app'
+  '/api/events/{EventUuid}/guests/{GuestCode}':
+    get:
+      tags:
+        - Guests
+      summary: 'Show single guest details'
+      operationId: getGuest
+      parameters:
+        -
+          $ref: '#/components/parameters/X-Api-Key'
+        -
+          $ref: '#/components/parameters/EventUuid'
+        -
+          $ref: '#/components/parameters/GuestCode'
+      responses:
+        '200':
+          description: 'Successful response'
+          content:
+            application/json:
+              schema: {  }
+              examples:
+                'Main guest example response':
+                  summary: 'Main guest example response'
+                  value: { data: { guest: [{ code: ABCD1234, role: main, status: confirmed, extended_fields: { field1: value1, field2: value2 }, booking: { extended_fields: { field1: value1, field2: value2 } }, contact: { sex: male, full_name: 'John Doe', first_name: John, last_name: Doe, email: john@example.com, phone: '1234567890', company_name: ACME, job_title: CEO, address_line_1: '123 Main St', address_line_2: 'Apt 1', zip: '12345', city: Anytown, country: us, extended_fields: { field1: value1, field2: value2 } }, reservations: [{ id: 1efe2ef0-3303-6146-9885-0242c0a89e06, starts_at: '2025-02-04 12:56:05', ends_at: '2025-02-04 14:56:05', checkin: null }], companion_guests: [{ code: ABCD4321, role: companion, status: confirmed, extended_fields: { field1: value1, field2: value2 }, contact: { sex: female, full_name: 'Jane Doe', first_name: Jane, last_name: Doe, email: jane@example.com, phone: '1234567890', company_name: ACME, job_title: CFO, address_line_1: '123 Main St', address_line_2: 'Apt 1', zip: '12345', city: Anytown, country: us, extended_fields: { field1: value1, field2: value2 } } }] }] } }
+                'Companion guest example response':
+                  summary: 'Companion guest example response'
+                  value: { data: { guest: [{ code: ABCD1234, role: companion, status: confirmed, extended_fields: { field1: value1, field2: value2 }, booking: { extended_fields: { field1: value1, field2: value2 } }, contact: { sex: male, full_name: 'John Doe', first_name: John, last_name: Doe, email: john@example.com, phone: '1234567890', company_name: ACME, job_title: CEO, address_line_1: '123 Main St', address_line_2: 'Apt 1', zip: '12345', city: Anytown, country: us, extended_fields: { field1: value1, field2: value2 } }, reservations: [{ id: 1efe2ef0-3303-6146-9885-0242c0a89e06, starts_at: '2025-02-04 12:56:05', ends_at: '2025-02-04 14:56:05', checkin: null }], main_guest: { code: ABCD4321, role: main, status: confirmed, extended_fields: { field1: value1, field2: value2 }, contact: { sex: female, full_name: 'Jane Doe', first_name: Jane, last_name: Doe, email: jane@example.com, phone: '1234567890', company_name: ACME, job_title: CFO, address_line_1: '123 Main St', address_line_2: 'Apt 1', zip: '12345', city: Anytown, country: us, extended_fields: { field1: value1, field2: value2 } } } }] } }
+      servers:
+        -
+          url: 'https://airlst.app'
+    put:
+      tags:
+        - Guests
+      summary: 'Update guest'
+      operationId: updateGuest
+      parameters:
+        -
+          $ref: '#/components/parameters/X-Api-Key'
+        -
+          $ref: '#/components/parameters/EventUuid'
+        -
+          $ref: '#/components/parameters/GuestCode'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                -
+                  $ref: '#/components/schemas/GuestPayload'
+                -
+                  $ref: '#/components/schemas/BookingPayload'
+                -
+                  $ref: '#/components/schemas/ContactPayload'
+      responses:
+        '200':
+          description: 'Successful response'
+          content:
+            application/json:
+              schema: {  }
+              examples:
+                'Updated guest response':
+                  summary: 'Updated guest response'
+                  value: { data: { guest: [{ code: ABCD1234, role: main, status: confirmed, extended_fields: { field1: value1, field2: value2 }, booking: { extended_fields: { field1: value1, field2: value2 } }, contact: { sex: male, full_name: 'John Doe', first_name: John, last_name: Doe, email: john@example.com, phone: '1234567890', company_name: ACME, job_title: CEO, address_line_1: '123 Main St', address_line_2: 'Apt 1', zip: '12345', city: Anytown, country: us, extended_fields: { field1: value1, field2: value2 } }, main_guest: { code: ABCD4321, role: main, status: confirmed, extended_fields: { field1: value1, field2: value2 }, contact: { sex: female, full_name: 'Jane Doe', first_name: Jane, last_name: Doe, email: jane@example.com, phone: '1234567890', company_name: ACME, job_title: CFO, address_line_1: '123 Main St', address_line_2: 'Apt 1', zip: '12345', city: Anytown, country: us, extended_fields: { field1: value1, field2: value2 } } } }] } }
+      servers:
+        -
+          url: 'https://airlst.app'
+    delete:
+      tags:
+        - Guests
+      summary: 'Delete guest'
+      operationId: deleteGuest
+      parameters:
+        -
+          $ref: '#/components/parameters/X-Api-Key'
+        -
+          $ref: '#/components/parameters/EventUuid'
+        -
+          $ref: '#/components/parameters/GuestCode'
+      responses:
+        '204':
+          description: 'Successful response'
+      servers:
+        -
+          url: 'https://airlst.app'
+  '/api/events/{EventUuid}/guests/{GuestCode}/attachments/{AttachmentUuid}/url':
+    get:
+      tags:
+        - Guests
+      summary: 'Get temporary downloadable URL for guest attachment'
+      operationId: getGuestAttachmentDownloadUrl
+      parameters:
+        -
+          $ref: '#/components/parameters/X-Api-Key'
+        -
+          $ref: '#/components/parameters/EventUuid'
+        -
+          $ref: '#/components/parameters/GuestCode'
+        -
+          $ref: '#/components/parameters/AttachmentUuid'
+      responses:
+        '200':
+          description: 'Successful response'
+          content:
+            application/json:
+              schema: {  }
+              examples:
+                'Sample response':
+                  summary: 'Sample response'
+                  value: { data: { url: 'http://aws.local:9000/core-local-airlst/media/1f016173-6eec-6712-8d9a-0242c0a89e07/sakura_art_nebo_122545_1920x1080.jpg?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250410%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Date=20250410T142221Z&X-Amz-SignedHeaders=host&X-Amz-Expires=600&X-Amz-Signature=ce72413aeac3315a7423a11cf211d84900c7bb22c73fb1468964a464dfc6f79d' } }
+      servers:
+        -
+          url: 'https://airlst.app'
+  '/api/events/{EventUuid}/guests/{GuestCode}/attachments':
+    get:
+      tags:
+        - Guests
+      summary: 'List all guest attachments'
+      operationId: getGuestAttachments
+      parameters:
+        -
+          $ref: '#/components/parameters/X-Api-Key'
+        -
+          $ref: '#/components/parameters/EventUuid'
+        -
+          $ref: '#/components/parameters/GuestCode'
+      responses:
+        '200':
+          description: 'Successful response'
+          content:
+            application/json:
+              schema: {  }
+              examples:
+                'Sample response':
+                  summary: 'Sample response'
+                  value: { data: { attachments: [{ name: document.pdf, file_name: document.pdf, uuid: 1f00ef06-33c1-6b9a-a2bb-0242c0a89e07, preview_url: '', original_url: 'http://aws.local:9000/media/1f00ef07-48d9-6130-b0a9-0242c0a89e07/document.pdf', order: 1, custom_properties: [], extension: pdf, size: 258295 }, { name: document2.pdf, file_name: document2.pdf, uuid: 1f00ef06-33c1-6b9a-a2bb-0242c0a89e08, preview_url: '', original_url: 'http://aws.local:9000/media/1f00ef07-48d9-6130-b0a9-0242c0a89e08/document2.pdf', order: 2, custom_properties: [], extension: pdf, size: 258295 }] } }
+      servers:
+        -
+          url: 'https://airlst.app'
+  '/api/events/{EventUuid}/guests':
+    get:
+      tags:
+        - Guests
+      summary: 'List guests'
+      operationId: getGuests
+      parameters:
+        -
+          $ref: '#/components/parameters/X-Api-Key'
+        -
+          $ref: '#/components/parameters/EventUuid'
+        -
+          name: per_page
+          in: query
+          description: 'Number of items per page'
+          required: false
+          allowEmptyValue: false
+          schema:
+            type: integer
+            enum:
+              - 25
+              - 100
+              - 250
+        -
+          name: page
+          in: query
+          description: 'Page number'
+          required: false
+          allowEmptyValue: false
+          schema:
+            type: integer
+        -
+          name: search
+          in: query
+          description: 'Quick search'
+          required: false
+          allowEmptyValue: false
+          schema:
+            type: string
+        -
+          name: 'filters(status*eq)'
+          in: query
+          description: 'Filter field operator. Template: filters(field*operator)=value. One of: eq (equal), neq (not equal), like, gt (greater than), gte (greater than or equal), lt (less than), lte (less than or equal). If operator is not provided eq will be used as default. If you want to filter by nested fields, use the : separator to indicate nesting levels. For example: filters(contact:sex*eq)=male targets the sex field inside contact. filters(booking:extended_fields->team_name*eq)=Dev targets the team_name field inside the extended_fields object (represented with ->), which is inside booking.'
+          required: false
+          allowEmptyValue: false
+          schema:
+            type: string
+        -
+          name: 'sorts(role*0)'
+          in: query
+          description: 'Sorts array. Template: sorts(field*order)=desc'
+          required: false
+          allowEmptyValue: false
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+        -
+          name: since
+          in: query
+          description: 'Timestamp to get guests updated/deleted since'
+          required: false
+          allowEmptyValue: false
+          schema:
+            type: integer
+            format: epoch
+      responses:
+        '200':
+          description: 'Successful response'
+          content:
+            application/json:
+              schema: {  }
+              examples:
+                'Guests list example response':
+                  summary: 'Guests list example response'
+                  value: { data: { guests: [{ code: ABCD1234, role: main, status: confirmed, extended_fields: { field1: value1, field2: value2 }, booking: { extended_fields: { field1: value1, field2: value2 } }, contact: { sex: male, full_name: 'John Doe', first_name: John, last_name: Doe, email: john@example.com, phone: '1234567890', company_name: ACME, job_title: CEO, address_line_1: '123 Main St', address_line_2: 'Apt 1', zip: '12345', city: Anytown, country: us, extended_fields: { field1: value1, field2: value2 } }, reservations: [{ id: 1efe2ef0-3303-6146-9885-0242c0a89e06, starts_at: '2025-02-04 12:56:05', ends_at: '2025-02-04 14:56:05', checkin: null }], companion_guests: [{ code: ABCD4321, role: companion, status: confirmed, extended_fields: { field1: value1, field2: value2 }, contact: { sex: female, full_name: 'Jane Doe', first_name: Jane, last_name: Doe, email: jane@example.com, phone: '1234567890', company_name: ACME, job_title: CFO, address_line_1: '123 Main St', address_line_2: 'Apt 1', zip: '12345', city: Anytown, country: us, extended_fields: { field1: value1, field2: value2 } } }] }, { code: ABCD1234, role: companion, status: confirmed, extended_fields: { field1: value1, field2: value2 }, booking: { extended_fields: { field1: value1, field2: value2 } }, contact: { sex: male, full_name: 'John Doe', first_name: John, last_name: Doe, email: john@example.com, phone: '1234567890', company_name: ACME, job_title: CEO, address_line_1: '123 Main St', address_line_2: 'Apt 1', zip: '12345', city: Anytown, country: us, extended_fields: { field1: value1, field2: value2 } }, reservations: [{ id: 1efe2ef0-3303-6146-9885-0242c0a89e06, starts_at: '2025-02-04 12:56:05', ends_at: '2025-02-04 14:56:05', checkin: null }], main_guest: { code: ABCD4321, role: main, status: confirmed, extended_fields: { field1: value1, field2: value2 }, contact: { sex: female, full_name: 'Jane Doe', first_name: Jane, last_name: Doe, email: jane@example.com, phone: '1234567890', company_name: ACME, job_title: CFO, address_line_1: '123 Main St', address_line_2: 'Apt 1', zip: '12345', city: Anytown, country: us, extended_fields: { field1: value1, field2: value2 } } } }], deleted_guests: [1eee5178-6deb-65d4-a17d-0242c0a89e04] }, meta: { pagination: { per_page: 25, current_page: 1, total_pages: 1, total_entries: 5 }, timestamp: 1630000000 } }
+      servers:
+        -
+          url: 'https://airlst.app'
+    post:
+      tags:
+        - Guests
+      summary: 'Create a main guest with optional companions'
+      operationId: createGuests
+      parameters:
+        -
+          $ref: '#/components/parameters/X-Api-Key'
+        -
+          $ref: '#/components/parameters/EventUuid'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              allOf:
+                -
+                  $ref: '#/components/schemas/GuestPayload'
+                -
+                  $ref: '#/components/schemas/BookingPayload'
+                -
+                  $ref: '#/components/schemas/ContactPayload'
+                -
+                  properties: { companions: { description: 'Array of companions of the main guest', type: array, items: { type: array, items: { allOf: [{ $ref: '#/components/schemas/CompanionGuestPayload' }, { $ref: '#/components/schemas/ContactPayload' }] } }, example: [] } }
+                  type: object
+      responses:
+        '200':
+          description: 'Successful response'
+          content:
+            application/json:
+              schema: {  }
+              examples:
+                'Created guest response':
+                  summary: 'Created guest response'
+                  value: { data: { guest: [{ code: ABCD1234, role: main, status: confirmed, extended_fields: { field1: value1, field2: value2 }, booking: { extended_fields: { field1: value1, field2: value2 } }, contact: { sex: male, full_name: 'John Doe', first_name: John, last_name: Doe, email: john@example.com, phone: '1234567890', company_name: ACME, job_title: CEO, address_line_1: '123 Main St', address_line_2: 'Apt 1', zip: '12345', city: Anytown, country: us, extended_fields: { field1: value1, field2: value2 } }, companion_guests: { code: ABCD1234, role: companion, status: confirmed, extended_fields: { field1: value1, field2: value2 }, booking: { extended_fields: { field1: value1, field2: value2 } }, contact: { sex: female, full_name: 'Jane Doe', first_name: Jane, last_name: Doe, email: jane@example.com, phone: '0987654321', company_name: ACME, job_title: CTO, address_line_1: '123 Main St', address_line_2: 'Apt 1', zip: '12345', city: Anytown, country: us, extended_fields: { field1: value1, field2: value2 } } } }] } }
+      servers:
+        -
+          url: 'https://airlst.app'
+  '/api/events/{EventUuid}/guests/{GuestCode}/restore':
+    put:
+      tags:
+        - Guests
+      summary: 'Restore archived guest'
+      operationId: restoreGuest
+      parameters:
+        -
+          $ref: '#/components/parameters/X-Api-Key'
+        -
+          $ref: '#/components/parameters/EventUuid'
+        -
+          $ref: '#/components/parameters/GuestCode'
+      responses:
+        '204':
+          description: 'Successful response'
+          content:
+            application/json:
+              schema: {  }
+              examples:
+                'Restore main guest example response':
+                  summary: 'Restore main guest example response'
+                  value: { data: { guest: [{ code: ABCD1234, role: main, status: confirmed, extended_fields: { field1: value1, field2: value2 }, booking: { extended_fields: { field1: value1, field2: value2 } }, contact: { sex: male, full_name: 'John Doe', first_name: John, last_name: Doe, email: john@example.com, phone: '1234567890', company_name: ACME, job_title: CEO, address_line_1: '123 Main St', address_line_2: 'Apt 1', zip: '12345', city: Anytown, country: us, extended_fields: { field1: value1, field2: value2 } }, companion_guests: [{ code: ABCD4321, role: companion, status: confirmed, extended_fields: { field1: value1, field2: value2 }, contact: { sex: female, full_name: 'Jane Doe', first_name: Jane, last_name: Doe, email: jane@example.com, phone: '1234567890', company_name: ACME, job_title: CFO, address_line_1: '123 Main St', address_line_2: 'Apt 1', zip: '12345', city: Anytown, country: us, extended_fields: { field1: value1, field2: value2 } } }] }] } }
+                'Restore companion guest example response':
+                  summary: 'Restore companion guest example response'
+                  value: { data: { guest: [{ code: ABCD1234, role: companion, status: confirmed, extended_fields: { field1: value1, field2: value2 }, booking: { extended_fields: { field1: value1, field2: value2 } }, contact: { sex: male, full_name: 'John Doe', first_name: John, last_name: Doe, email: john@example.com, phone: '1234567890', company_name: ACME, job_title: CEO, address_line_1: '123 Main St', address_line_2: 'Apt 1', zip: '12345', city: Anytown, country: us, extended_fields: { field1: value1, field2: value2 } }, main_guest: { code: ABCD4321, role: main, status: confirmed, extended_fields: { field1: value1, field2: value2 }, contact: { sex: female, full_name: 'Jane Doe', first_name: Jane, last_name: Doe, email: jane@example.com, phone: '1234567890', company_name: ACME, job_title: CFO, address_line_1: '123 Main St', address_line_2: 'Apt 1', zip: '12345', city: Anytown, country: us, extended_fields: { field1: value1, field2: value2 } } } }] } }
+      servers:
+        -
+          url: 'https://airlst.app'
+  '/api/events/{EventUuid}/guests/{MainGuestCode}/companions':
+    post:
+      tags:
+        - Guests
+      summary: 'Create a companion guest for main guest'
+      operationId: createCompanionGuest
+      parameters:
+        -
+          $ref: '#/components/parameters/X-Api-Key'
+        -
+          $ref: '#/components/parameters/EventUuid'
+        -
+          $ref: '#/components/parameters/MainGuestCode'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              allOf:
+                -
+                  $ref: '#/components/schemas/CompanionGuestPayload'
+                -
+                  $ref: '#/components/schemas/ContactPayload'
+                -
+                  properties: { send_automated_email: { description: 'Send automated email to the guest with the booking details', type: boolean } }
+                  type: object
+      responses:
+        '200':
+          description: 'Successful response'
+          content:
+            application/json:
+              schema: {  }
+              examples:
+                'Created companion guest response':
+                  summary: 'Created companion guest response'
+                  value: { data: { guest: [{ code: ABCD1234, role: companion, status: confirmed, extended_fields: { field1: value1, field2: value2 }, booking: { extended_fields: { field1: value1, field2: value2 } }, contact: { sex: male, full_name: 'John Doe', first_name: John, last_name: Doe, email: john@example.com, phone: '1234567890', company_name: ACME, job_title: CEO, address_line_1: '123 Main St', address_line_2: 'Apt 1', zip: '12345', city: Anytown, country: us, extended_fields: { field1: value1, field2: value2 } }, main_guest: { code: ABCD4321, role: main, status: confirmed, extended_fields: { field1: value1, field2: value2 }, contact: { sex: female, full_name: 'Jane Doe', first_name: Jane, last_name: Doe, email: jane@example.com, phone: '1234567890', company_name: ACME, job_title: CFO, address_line_1: '123 Main St', address_line_2: 'Apt 1', zip: '12345', city: Anytown, country: us, extended_fields: { field1: value1, field2: value2 } } } }] } }
+      servers:
+        -
+          url: 'https://airlst.app'
+  '/api/events/{EventUuid}/guests/{MainGuestCode}/recommendations':
+    post:
+      tags:
+        - Guests
+      summary: 'Create a recommended guest for main guest'
+      operationId: createRecommendedGuest
+      parameters:
+        -
+          $ref: '#/components/parameters/X-Api-Key'
+        -
+          $ref: '#/components/parameters/EventUuid'
+        -
+          $ref: '#/components/parameters/MainGuestCode'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                -
+                  $ref: '#/components/schemas/RecommendedGuestPayload'
+                -
+                  $ref: '#/components/schemas/ContactPayload'
+      responses:
+        '200':
+          description: 'Successful response'
+          content:
+            application/json:
+              schema: {  }
+              examples:
+                'Created recommended guest response':
+                  summary: 'Created recommended guest response'
+                  value: { data: { guest: [{ code: ABCD1234, role: main, status: confirmed, extended_fields: { field1: value1, field2: value2 }, booking: { extended_fields: { field1: value1, field2: value2 } }, contact: { sex: male, full_name: 'John Doe', first_name: John, last_name: Doe, email: john@example.com, phone: '1234567890', company_name: ACME, job_title: CEO, address_line_1: '123 Main St', address_line_2: 'Apt 1', zip: '12345', city: Anytown, country: us, extended_fields: { field1: value1, field2: value2 } }, recommended_by: { code: ABCD4321, role: main, status: confirmed, extended_fields: { field1: value1, field2: value2 }, contact: { sex: female, full_name: 'Jane Doe', first_name: Jane, last_name: Doe, email: jane@example.com, phone: '1234567890', company_name: ACME, job_title: CFO, address_line_1: '123 Main St', address_line_2: 'Apt 1', zip: '12345', city: Anytown, country: us, extended_fields: { field1: value1, field2: value2 } } } }] } }
+      servers:
+        -
+          url: 'https://airlst.app'
+  '/api/events/{EventUuid}/guests/{GuestCode}/emailoptinstatus':
+    put:
+      tags:
+        - Guests
+      summary: 'Update guest email opt in status'
+      operationId: updateGuestEmailOptInStatus
+      parameters:
+        -
+          $ref: '#/components/parameters/X-Api-Key'
+        -
+          $ref: '#/components/parameters/EventUuid'
+        -
+          $ref: '#/components/parameters/GuestCode'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              required:
+                - email_opt_in_status
+              properties:
+                email_opt_in_status:
+                  description: 'Opt in status'
+                  type: string
+                  example: subscribe
+                  oneOf: [{ type: string, enum: [subscribe, unsubscribe] }]
+              type: object
+      responses:
+        '204':
+          description: 'Successful response'
+      servers:
+        -
+          url: 'https://airlst.app'
+  '/api/events/{EventUuid}/guests/validate-code':
+    post:
+      tags:
+        - Guests
+      summary: 'Validate a guest code'
+      operationId: validateGuestCode
+      parameters:
+        -
+          $ref: '#/components/parameters/X-Api-Key'
+        -
+          $ref: '#/components/parameters/EventUuid'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                code:
+                  description: 'The guest code'
+                  type: string
+                  maxLength: 24
+                  minLength: 4
+                  example: ABCD1234
+              type: object
+      responses:
+        '200':
+          description: 'Successful response'
+          content:
+            application/json:
+              schema: {  }
+              examples:
+                'Valid guest code':
+                  summary: 'Valid guest code'
+                  value: { data: { valid: true } }
+                'Invalid guest code':
+                  summary: 'Invalid guest code'
+                  value: { data: { valid: false } }
+      servers:
+        -
+          url: 'https://airlst.app'
+  /api/companies/events:
+    get:
+      tags:
+        - Company
+      summary: 'List company events'
+      operationId: getCompanyEvents
+      parameters:
+        -
+          $ref: '#/components/parameters/X-Api-Key'
+      responses:
+        '200':
+          description: 'Successful response'
+          content:
+            application/json:
+              schema: {  }
+              examples:
+                'Company events response':
+                  summary: 'Company events response'
+                  value: { data: { events: [{ id: 1, name: 'Event name 1', start_date: '2022-01-01', end_date: '2022-01-02' }, { id: 2, name: 'Event name 2', start_date: '2022-01-01', end_date: '2022-01-02' }] } }
+      servers:
+        -
+          url: 'https://airlst.app'
+  '/api/companies/contacts/{ContactCode}/events':
+    get:
+      tags:
+        - Contacts
+      summary: 'Show events for a contact'
+      operationId: getContactEvents
+      parameters:
+        -
+          $ref: '#/components/parameters/X-Api-Key'
+        -
+          $ref: '#/components/parameters/ContactCode'
+      responses:
+        '200':
+          description: 'Successful response'
+          content:
+            application/json:
+              schema: {  }
+              examples:
+                'Events example response':
+                  summary: 'Events example response'
+                  value: { data: { events: [{ id: 1efd277e-9a27-6b58-b1e3-0242c0a89e06, name: quisquam, starts_at: '2025-02-14T13:03:13.000000Z', ends_at: '2025-02-15T13:03:13.000000Z', created_at: '2025-01-14T13:03:13.000000Z', deleted_at: null, address: null, addressString: null, settings: { registration_type: closed, registration_password: null, default_booking_status: listed, allow_companions: false, max_companions_per_booking: null, limited_registration_period: false, registration_starts_at: null, registration_ends_at: null, email_recipient_setting: individual_guests, limited_guests: false, limited_guests_max_number: null, limited_guests_statuses: [confirmed], limited_guests_waitlisted: false, limited_guests_waitlisted_max_number: null, copying_started_at: null, copying_finished_at: null, allow_recommendations: false, max_recommendations_per_guest: null, attendance_fee_enabled: false, attendance_fee_amount: null, companion_attendance_fee_amount: null, attendance_fee_currency: null, attendance_fee_vat: null } }] } }
+      servers:
+        -
+          url: 'https://airlst.app'
+  '/api/companies/contacts/{ContactCode}':
+    get:
+      tags:
+        - Contacts
+      summary: 'Show single contact details'
+      operationId: getContactDetails
+      parameters:
+        -
+          $ref: '#/components/parameters/X-Api-Key'
+        -
+          $ref: '#/components/parameters/ContactCode'
+      responses:
+        '200':
+          description: 'Successful response'
+          content:
+            application/json:
+              schema: {  }
+              examples:
+                'Contact example response':
+                  summary: 'Contact example response'
+                  value: { data: { contact: { code: QOI1U9GX, sex: male, full_name: 'John Doe', first_name: John, last_name: Doe, email: john@example.com, phone: '1234567890', company_name: ACME, job_title: CEO, address_line_1: '123 Main St', address_line_2: 'Apt 1', zip: '12345', city: Anytown, country: us, extended_fields: { field1: value1, field2: value2 } } } }
+      servers:
+        -
+          url: 'https://airlst.app'
+  /api/companies/contacts/validate-code:
+    post:
+      tags:
+        - Contacts
+      summary: 'Validate a contact code'
+      operationId: validateContactCode
+      parameters:
+        -
+          $ref: '#/components/parameters/X-Api-Key'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                code:
+                  description: 'The contact code'
+                  type: string
+                  maxLength: 24
+                  minLength: 4
+                  example: ABCD1234
+              type: object
+      responses:
+        '200':
+          description: 'Successful response'
+          content:
+            application/json:
+              schema: {  }
+              examples:
+                'Valid contact code':
+                  summary: 'Valid contact code'
+                  value: { data: { valid: true } }
+                'Invalid contact code':
+                  summary: 'Invalid contact code'
+                  value: { data: { valid: false } }
+      servers:
+        -
+          url: 'https://airlst.app'
+  '/api/events/{EventUuid}/documents/{DocumentUuid}/download':
+    post:
+      tags:
+        - Documents
+      summary: 'get URL of documents to selected guests'
+      operationId: getGuestsDocumentsUrls
+      parameters:
+        -
+          $ref: '#/components/parameters/X-Api-Key'
+        -
+          $ref: '#/components/parameters/EventUuid'
+        -
+          $ref: '#/components/parameters/DocumentUuid'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                guests:
+                  description: 'Array of guest codes to which you want to download their documents'
+                  type: array
+                  items: { type: string }
+                  example: [ABCD1234, ABCD2345]
+              type: object
+      responses:
+        '200':
+          description: 'Successful response'
+          content:
+            application/json:
+              schema: {  }
+              examples:
+                'Document url to of selected guests':
+                  summary: 'Document url to of selected guests'
+                  value: { data: { url: 'https://document-url-example.com' } }
+      servers:
+        -
+          url: 'https://airlst.app'
+  '/api/events/{EventUuid}/documents':
+    get:
+      tags:
+        - Documents
+      summary: 'List published documents'
+      operationId: getEventDocuments
+      parameters:
+        -
+          $ref: '#/components/parameters/X-Api-Key'
+        -
+          $ref: '#/components/parameters/EventUuid'
+      responses:
+        '200':
+          description: 'Successful response'
+          content:
+            application/json:
+              schema: {  }
+              examples:
+                'Documents list example response':
+                  summary: 'Documents list example response'
+                  value: { data: { documents: [{ id: 1ef6c30f-dcfc-63ea-ba29-0242c0a89e06, name: 'VIP Name badge', format: pdf, type: name_badge }] } }
+      servers:
+        -
+          url: 'https://airlst.app'
+  '/api/events/{EventUuid}/emails/email-templates':
+    get:
+      tags:
+        - Emails
+      summary: 'List email templates'
+      operationId: getEmailTemplates
+      parameters:
+        -
+          $ref: '#/components/parameters/X-Api-Key'
+        -
+          $ref: '#/components/parameters/EventUuid'
+      responses:
+        '200':
+          description: 'Successful response'
+          content:
+            application/json:
+              schema: {  }
+              examples:
+                'Email templates list example response':
+                  summary: 'Email templates list example response'
+                  value: { data: { emailTemplates: [{ id: 1ef6c30f-dcfc-63ea-ba29-0242c0a89e06, name: Confirmation, subject: { en-GB: 'Confirmation of Registration', de-DE: Anmeldebestätigung }, sender_name: { de-DE: 'My Companions Event', en-GB: 'My Companions Event' }, cc: null, bcc: null, reply_to: admin@airlst.com, preview: { de-DE: null, en-GB: null }, html: { en-GB: '<!DOCTYPE html><html lang="en"></html>', de-DE: '<!DOCTYPE html><html lang="de"></html>' }, json: { en-GB: '{"page":{"title":""}', de-DE: '{"page":{"title":""}' }, booking_status_hook: confirmed, uses_wallet_ticket: false, uses_pdf_ticket: false, uses_calendar_event: false, sender_identity_id: null, attachments: { de-DE: [{ id: 1ef75359-245b-6cc0-aa29-0242c0a89e06, model_type: emailTemplate, model_id: 1ef6c30f-dd18-6914-9650-0242c0a89e06, uuid: 1ef75358-fce5-6394-9a81-0242c0a89e06, collection_name: attachment, name: 200111600931_235898.jpg, file_name: 200111600931_235898.jpg, mime_type: image/jpeg, disk: s3_public, conversions_disk: s3_public, size: 21548, manipulations: [], custom_properties: { locale: de-DE, custom_headers: [] }, generated_conversions: [], responsive_images: [], order_column: 0, created_at: '2024-09-17T20:44:01.000000Z', updated_at: '2024-09-17T20:44:02.000000Z', original_url: 'https://amazonaws.com/media/1ef75359-245b-6cc0-aa29-0242c0a89e06/200111600931_235898.jpg', preview_url: '' }] }, calendarEvent: { id: 1ef75359-2c41-6728-a0c8-0242c0a89e06, name: { de-DE: 'My Companions Event', en-GB: 'My Companions Event' }, description: [], starts_at: '2024-09-13T09:18:31.000000Z', ends_at: '2024-09-15T09:18:31.000000Z', timezone: null, address: 'Companions Location, Companions Str., 81548, Munich, Germany', url: null, organizer_name: null, organizer_email: null } }, { id: 1ef6c30f-dd0b-614c-927d-0242c0a89e06, name: Cancellation, subject: { en-GB: 'Cancellation of Registration', de-DE: 'Stornierung der Registrierung' }, sender_name: { de-DE: 'My Companions Event', en-GB: 'My Companions Event' }, cc: null, bcc: null, reply_to: admin@airlst.com, preview: { de-DE: null, en-GB: null }, html: { en-GB: '<!DOCTYPE html><html lang="en"></html>', de-DE: '<!DOCTYPE html><html lang="de"></html>' }, json: { en-GB: '{"page":{"title":""}', de-DE: '{"page":{"title":""}' }, booking_status_hook: cancelled, uses_wallet_ticket: false, uses_pdf_ticket: false, uses_calendar_event: false, sender_identity_id: null }, { id: 1ef6c30f-dd18-6914-9650-0242c0a89e06, name: Invitation, subject: { en-GB: 'Invitation to Attend Our Conference', de-DE: 'Einladung zur Teilnahme an unserer Konferenz' }, sender_name: { de-DE: 'My Companions Event', en-GB: 'My Companions Event' }, cc: null, bcc: null, reply_to: admin@airlst.com, preview: { de-DE: null, en-GB: null }, html: { en-GB: '<!DOCTYPE html><html lang="en"></html>', de-DE: '<!DOCTYPE html><html lang="de"></html>' }, json: { en-GB: '{"page":{"title":""}', de-DE: '{"page":{"title":""}' }, booking_status_hook: invited, uses_wallet_ticket: false, uses_pdf_ticket: false, uses_calendar_event: false, sender_identity_id: null }] } }
+      servers:
+        -
+          url: 'https://airlst.app'
+  '/api/events/{EventUuid}/emails/email-templates/{EmailTemplateUuid}/send':
+    post:
+      tags:
+        - Events
+      summary: 'Send email template to selected guests'
+      operationId: sendEmailTemplate
+      parameters:
+        -
+          $ref: '#/components/parameters/X-Api-Key'
+        -
+          $ref: '#/components/parameters/EventUuid'
+        -
+          $ref: '#/components/parameters/EmailTemplateUuid'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                guests:
+                  description: 'Array of guest codes to which the email will be sent'
+                  type: array
+                  items: { type: string }
+                  example: [ABCD1234, ABCD2345]
+              type: object
+      responses:
+        '204':
+          description: 'Successful response'
+      servers:
+        -
+          url: 'https://airlst.app'
+  '/api/events/{EventUuid}/create-temporary-upload':
+    post:
+      tags:
+        - Guests
+      summary: 'Create temporary upload'
+      operationId: createTemporaryUpload
+      parameters:
+        -
+          $ref: '#/components/parameters/X-Api-Key'
+        -
+          $ref: '#/components/parameters/EventUuid'
+        -
+          $ref: '#/components/parameters/GuestCode'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              required:
+                - uuid
+                - key
+                - bucket
+                - name
+                - size
+                - content_type
+              properties:
+                uuid:
+                  type: string
+                  example: 1f00ef06-33c1-6b9a-a2bb-0242c0a89e07
+                key:
+                  type: string
+                  example: tmp/1f00ef06-33c1-6b9a-a2bb-0242c0a89e07
+                bucket:
+                  type: string
+                  example: core-local-airlst
+                name:
+                  type: string
+                  example: document.pdf
+                size:
+                  type: integer
+                  example: 258295
+                content_type:
+                  type: string
+                  example: application/pdf
+              type: object
+      responses:
+        '200':
+          description: 'Successful response'
+          content:
+            application/json:
+              schema: {  }
+              examples:
+                'Sample response':
+                  summary: 'Sample response'
+                  value: { data: { temporary_upload: { name: document.pdf, file_name: document.pdf, uuid: 1f00ef06-33c1-6b9a-a2bb-0242c0a89e07, preview_url: '', original_url: 'http://aws.local:9000/media/1f00ef07-48d9-6130-b0a9-0242c0a89e07/document.pdf', order: 1, custom_properties: [], extension: pdf, size: 258295 } } }
+      servers:
+        -
+          url: 'https://airlst.app'
+  '/api/events/{EventUuid}/signed-storage-url':
+    get:
+      tags:
+        - Events
+      summary: 'Get signed storage url to upload image'
+      operationId: getSignedStorageUrl
+      parameters:
+        -
+          $ref: '#/components/parameters/X-Api-Key'
+        -
+          $ref: '#/components/parameters/EventUuid'
+      responses:
+        '200':
+          description: 'Successful response'
+          content:
+            application/json:
+              schema: {  }
+              examples:
+                'Sample response':
+                  summary: 'Sample response'
+                  value: { uuid: 1f00ef0c-c083-6014-bb12-0242c0a89e07, bucket: core-local-airlst, key: tmp/1f00ef0c-c083-6014-bb12-0242c0a89e07, url: 'http://aws.local:9000/core-local-airlst/tmp/1f00ef0c-c083-6014-bb12-0242c0a89e07?x-amz-acl=private&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20250401%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Date=20250401T115942Z&X-Amz-SignedHeaders=host%3Bx-amz-acl&X-Amz-Expires=300&X-Amz-Signature=5157667c4a935c5e01b8fb8949c10a4d04abdbce6be03405926fbd3f33cd2c54', headers: { Host: ['aws.local:9000'], x-amz-acl: [private], Content-Type: application/octet-stream } }
+      servers:
+        -
+          url: 'https://airlst.app'
+  '/api/events/{EventUuid}':
+    get:
+      tags:
+        - Events
+      summary: 'Show single event details'
+      operationId: getEvent
+      parameters:
+        -
+          $ref: '#/components/parameters/X-Api-Key'
+        -
+          $ref: '#/components/parameters/EventUuid'
+      responses:
+        '200':
+          description: 'Successful response'
+          content:
+            application/json:
+              schema: {  }
+              examples:
+                'Event response':
+                  summary: 'Event response'
+                  value: { data: { event: { id: 1, name: 'Event name', start_date: '2022-01-01', end_date: '2022-01-02' }, extendedFields: { event: [], contact: [], booking: [], guest: [] } } }
+      servers:
+        -
+          url: 'https://airlst.app'
+components:
+  schemas:
+    GuestPayload:
+      required:
+        - status
+      properties:
+        status:
+          description: 'The guest status'
+          type: string
+          example: confirmed
+          oneOf:
+            -
+              type: string
+              enum:
+                - listed
+                - invited
+                - requested
+                - waitlisted
+                - confirmed
+                - cancelled
+        extended_fields:
+          description: 'Extended fields values mapped with their keys'
+          type: object
+        send_automated_email:
+          description: 'Send automated email to the guest with the booking details'
+          type: boolean
+      type: object
+    CompanionGuestPayload:
+      properties:
+        status:
+          description: 'The guest status'
+          type: string
+          example: confirmed
+          oneOf:
+            -
+              type: string
+              enum:
+                - listed
+                - invited
+                - requested
+                - waitlisted
+                - confirmed
+                - cancelled
+        extended_fields:
+          description: 'Extended fields values mapped with their keys'
+          type: object
+      type: object
+    RecommendedGuestPayload:
+      required:
+        - status
+      properties:
+        status:
+          description: 'Recommended guest status'
+          type: string
+          example: confirmed
+          oneOf:
+            -
+              type: string
+              enum:
+                - listed
+                - invited
+                - requested
+                - confirmed
+        extended_fields:
+          description: 'Extended fields values mapped with their keys'
+          type: object
+      type: object
+    BookingPayload:
+      properties:
+        booking:
+          description: 'Booking details for guest'
+          type: object
+          additionalProperties:
+            properties:
+              extended_fields:
+                description: 'Booking extended fields values mapped with their keys'
+                type: object
+                example:
+                  field1: value1
+                  field2: value2
+              settings:
+                description: 'Booking settings'
+                type: object
+                additionalProperties:
+                  properties: { max_companions_per_booking: { description: 'Maximum companions allowed per booking', type: integer, minimum: 0 } }
+                  type: object
+            type: object
+      type: object
+    ContactPayload:
+      properties:
+        contact:
+          description: 'Contact details for guest'
+          type: object
+          additionalProperties:
+            properties:
+              sex:
+                description: 'Sex of the contact'
+                type: string
+                oneOf:
+                  - { type: string, enum: [male, female, diverse] }
+              title:
+                description: 'Title of the contact'
+                type: string
+              first_name:
+                description: 'First name of the contact'
+                type: string
+              last_name:
+                description: 'Last name of the contact'
+                type: string
+              email:
+                description: 'Email of the contact'
+                type: string
+              company_name:
+                description: 'Company name of the contact'
+                type: string
+              job_title:
+                description: 'Job title of the contact'
+                type: string
+              address_line_1:
+                description: 'Address line 1 of the contact'
+                type: string
+              address_line_2:
+                description: 'Address line 2 of the contact'
+                type: string
+              zip:
+                description: 'Zip code of the contact'
+                type: string
+              city:
+                description: 'City of the contact'
+                type: string
+              country:
+                description: 'ISO 2-code country name of the contact'
+                type: string
+                maxLength: 2
+                minLength: 2
+              phone:
+                description: 'Phone number of the contact'
+                type: string
+              subscribed:
+                description: 'Contact subscription to emails'
+                type: boolean
+              extended_fields:
+                description: 'Contact extended fields values mapped with their keys'
+                type: object
+                example:
+                  field1: value1
+                  field2: value2
+              email_opt_in_status:
+                description: 'Opt in status'
+                type: string
+                example: subscribe
+                oneOf:
+                  - { type: string, enum: [subscribe, unsubscribe] }
+            type: object
+      type: object
+  parameters:
+    X-Api-Key:
+      name: X-Api-Key
+      in: header
+      description: 'API Key'
+      required: true
+      allowEmptyValue: false
+      schema:
+        format: string
+    EventUuid:
+      name: EventUuid
+      in: path
+      description: 'Event UUID'
+      required: true
+      allowEmptyValue: false
+      schema:
+        format: uuid
+      example: 1eedc8e7-a8f4-62a8-8c68-0242c0a89e06
+    GuestCode:
+      name: GuestCode
+      in: path
+      description: 'Guest code'
+      required: true
+      allowEmptyValue: false
+      schema:
+        format: string
+      example: ABCD1234
+    MainGuestCode:
+      name: MainGuestCode
+      in: path
+      description: 'The code of the main guest'
+      required: true
+      allowEmptyValue: false
+      schema:
+        format: string
+      example: ABCD1234
+    EmailTemplateUuid:
+      name: EmailTemplateUuid
+      in: path
+      description: 'Email Template UUID'
+      required: true
+      allowEmptyValue: false
+      schema:
+        format: string
+      example: 1eedc8e7-a8f4-62a8-8c68-0242c0a89e06
+    DocumentUuid:
+      name: DocumentUuid
+      in: path
+      description: 'Document UUID'
+      required: true
+      allowEmptyValue: false
+      schema:
+        format: uuid
+      example: 1eff4299-c652-6808-997b-0242c0a89e06
+    AttachmentUuid:
+      name: AttachmentUuid
+      in: path
+      description: 'Guest attachment UUID'
+      required: true
+      allowEmptyValue: false
+      schema:
+        format: string
+      example: 1eedc8e7-a8f4-62a8-8c68-0242c0a89e06
+    ContactCode:
+      name: ContactCode
+      in: path
+      description: 'Contact code'
+      required: true
+      allowEmptyValue: false
+      schema:
+        format: string
+      example: ABCD1234
+    BookableGroupUuid:
+      name: BookableGroupUuid
+      in: path
+      description: 'BookableGroup UUID'
+      required: true
+      allowEmptyValue: false
+      schema:
+        format: uuid
+      example: 1eedc8e7-a8f4-62a8-8c68-0242c0a89e06
+    BookableUuid:
+      name: BookableUuid
+      in: path
+      description: 'Bookable object UUID'
+      required: true
+      allowEmptyValue: false
+      schema:
+        format: uuid
+      example: 1eedc8e7-a8f4-62a8-8c68-0242c0a89e06
+    ReservationUuid:
+      name: ReservationUuid
+      in: path
+      description: 'Reservation UUID'
+      required: true
+      allowEmptyValue: false
+      schema:
+        format: uuid
+      example: 1eedc8e7-a8f4-62a8-8c68-0242c0a89e06
+tags:
+  -
+    name: BookableGroups
+    description: BookableGroups
+  -
+    name: Guests
+    description: Guests
+  -
+    name: Company
+    description: Company
+  -
+    name: Contacts
+    description: Contacts
+  -
+    name: Documents
+    description: Documents
+  -
+    name: Emails
+    description: Emails
+  -
+    name: Events
+    description: Events

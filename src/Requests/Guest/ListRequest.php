@@ -18,7 +18,7 @@ class ListRequest extends Request
 
     public function resolveEndpoint(): string
     {
-        return '/'; 
+        return '/';
     }
 
     protected function defaultQuery(): array

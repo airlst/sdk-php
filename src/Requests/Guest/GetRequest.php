@@ -15,6 +15,6 @@ class GetRequest extends Request
 
     public function resolveEndpoint(): string
     {
-        return '/' . $this->code; 
+        return '/' . $this->code;
     }
 }

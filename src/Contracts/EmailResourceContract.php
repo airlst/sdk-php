@@ -9,7 +9,6 @@ use Saloon\Http\Response;
 interface EmailResourceContract
 {
     /**
-     * @param string $uuid
      * @param array<string> $body
      */
     public function send(string $uuid, array $body): Response;
