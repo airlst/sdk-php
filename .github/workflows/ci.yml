@@ -160,7 +160,7 @@ jobs:
         run: composer install --no-scripts
 
       - name: Run tests
-        run: php application test --env=ci --parallel --stop-on-failure
+        run: composer test --env=ci --parallel --stop-on-failure
 
   security:
     name: Security Checker
