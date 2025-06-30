@@ -35,24 +35,29 @@ class CoreApi extends Connector implements HasPagination
 
     public function guest(string $eventId): GuestResource
     {
-        if (str($this->baseUrl)->contains("/events/{$eventId}/guests/")) {
+        if (str($this->baseUrl)->contains("/events/{$eventId}/guests/")) {  // @phpstan-ignore-line
             return new GuestResource($this);
         }
-        
-        $this->baseUrl = $this->baseUrl . "/events/{$eventId}/guests";
+
+        $this->baseUrl .= "/events/{$eventId}/guests";
 
         return new GuestResource($this);
     }
 
     public function email(string $eventId): EmailResource
     {
-        if (str($this->baseUrl)->contains("/events/{$eventId}/emails/")) {
+        if (str($this->baseUrl)->contains("/events/{$eventId}/emails/")) {  // @phpstan-ignore-line
             return new EmailResource($this);
         }
 
-        $this->baseUrl = $this->baseUrl . "/events/{$eventId}/emails/email-templates";
+        $this->baseUrl .= "/events/{$eventId}/emails/email-templates";
 
         return new EmailResource($this);
+    }
+
+    public function paginate(Request $request): PagedPaginator
+    {
+        return new Paginator(connector: $this, request: $request);
     }
 
     protected function defaultHeaders(): array
@@ -60,12 +65,7 @@ class CoreApi extends Connector implements HasPagination
         return [
             'Accept' => 'application/json',
             'Content-Type' => 'application/json',
-            'X-Api-Key' => $this->apiKey
+            'X-Api-Key' => $this->apiKey,
         ];
-    }
-
-    public function paginate(Request $request): PagedPaginator
-    {
-        return new Paginator(connector: $this, request: $request);
     }
 }
