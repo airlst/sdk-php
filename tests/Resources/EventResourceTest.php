@@ -7,15 +7,13 @@ namespace AirLST\SdkPhp\Tests\Resources;
 use AirLST\SdkPhp\CoreApi;
 use AirLST\SdkPhp\Requests\Event\GetRequest;
 use AirLST\SdkPhp\Requests\Event\ListRequest;
+use AirLST\SdkPhp\Requests\Event\SendEmailTemplateRequest;
 use AirLST\SdkPhp\Resources\EventResource;
 use AirLST\SdkPhp\Tests\TestCase;
 use Saloon\Http\Request;
 use Saloon\Http\Response;
 
-/**
- * @internal
- */
-final class EventResourceTest extends TestCase
+class EventResourceTest extends TestCase
 {
     public function testList(): void
     {
@@ -27,7 +25,7 @@ final class EventResourceTest extends TestCase
         $result = $resource->list();
 
         $mockClient->assertSent(
-            fn (Request $request, Response $response): bool => $result->body() === $response->body()
+            fn (Request $request, Response $response) => $result->body() === $response->body()
         );
     }
 
@@ -41,11 +39,30 @@ final class EventResourceTest extends TestCase
         $result = $resource->get($expects['data']['event']['id']);
 
         $mockClient->assertSent(
-            fn (Request $request, Response $response): bool => $result->body() === $response->body()
+            fn (Request $request, Response $response) => $result->body() === $response->body()
         );
     }
 
-    private function resource(CoreApi $core): EventResource
+    public function testSendEmailTemplate(): void
+    {
+        $mockClient = $this->mock(request: SendEmailTemplateRequest::class, status: 204);
+
+        $resource = $this->resource($this->core->withMockClient($mockClient));
+        $result = $resource->sendEmailTemplate(
+            'event-id',
+            'email-template-id',
+            ['guests' => [
+                'ABCD1234',
+                'ABCD2345'
+            ]]
+        );
+
+        $mockClient->assertSent(
+            fn (Request $request, Response $response) => $request instanceof SendEmailTemplateRequest && $result->status() === $response->status()
+        );
+    }
+
+    protected function resource(CoreApi $core): EventResource
     {
         return new EventResource($core);
     }

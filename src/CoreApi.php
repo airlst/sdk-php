@@ -8,8 +8,11 @@ use AirLST\SdkPhp\Resources\EmailResource;
 use AirLST\SdkPhp\Resources\EventResource;
 use AirLST\SdkPhp\Resources\GuestResource;
 use Saloon\Http\Connector;
+use Saloon\Http\Request;
+use Saloon\PaginationPlugin\Contracts\HasPagination;
+use Saloon\PaginationPlugin\PagedPaginator;
 
-class CoreApi extends Connector
+class CoreApi extends Connector implements HasPagination
 {
     protected string $baseUrl = 'https://airlst.app/api';
 
@@ -32,22 +35,22 @@ class CoreApi extends Connector
 
     public function guest(string $eventId): GuestResource
     {
-        if (str($this->baseUrl)->contains("/events/{$eventId}/guests/")) {  // @phpstan-ignore-line
+        if (str($this->baseUrl)->contains("/events/{$eventId}/guests/")) {
             return new GuestResource($this);
         }
-
-        $this->baseUrl .= "/events/{$eventId}/guests";
+        
+        $this->baseUrl = $this->baseUrl . "/events/{$eventId}/guests";
 
         return new GuestResource($this);
     }
 
     public function email(string $eventId): EmailResource
     {
-        if (str($this->baseUrl)->contains("/events/{$eventId}/emails/")) {  // @phpstan-ignore-line
+        if (str($this->baseUrl)->contains("/events/{$eventId}/emails/")) {
             return new EmailResource($this);
         }
 
-        $this->baseUrl .= "/events/{$eventId}/emails/email-templates";
+        $this->baseUrl = $this->baseUrl . "/events/{$eventId}/emails/email-templates";
 
         return new EmailResource($this);
     }
@@ -57,7 +60,12 @@ class CoreApi extends Connector
         return [
             'Accept' => 'application/json',
             'Content-Type' => 'application/json',
-            'X-Api-Key' => $this->apiKey,
+            'X-Api-Key' => $this->apiKey
         ];
+    }
+
+    public function paginate(Request $request): PagedPaginator
+    {
+        return new Paginator(connector: $this, request: $request);
     }
 }

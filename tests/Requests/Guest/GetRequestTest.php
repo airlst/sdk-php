@@ -7,16 +7,13 @@ namespace AirLST\SdkPhp\Tests\Requests\Guest;
 use AirLST\SdkPhp\Requests\Guest\GetRequest;
 use AirLST\SdkPhp\Tests\TestCase;
 
-/**
- * @internal
- */
-final class GetRequestTest extends TestCase
+class GetRequestTest extends TestCase
 {
     public function testGet(): void
     {
         $mockClient = $this->mock(GetRequest::class);
 
-        $this->core->withMockClient($mockClient)->send(new GetRequest('event-id'));
+        $this->core->withMockClient($mockClient)->send(new GetRequest('guest-code'));
 
         $mockClient->assertSent(GetRequest::class);
     }

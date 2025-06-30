@@ -7,22 +7,18 @@ namespace AirLST\SdkPhp\Tests\Requests\Email;
 use AirLST\SdkPhp\Requests\Email\SendRequest;
 use AirLST\SdkPhp\Tests\TestCase;
 
-/**
- * @internal
- */
-final class SendRequestTest extends TestCase
+class SendRequestTest extends TestCase
 {
     public function testSend(): void
     {
         $mockClient = $this->mock(SendRequest::class);
-
+        
         $this->core
             ->withMockClient($mockClient)
             ->send(new SendRequest(
-                'email-template-uid',
-                ['guests' => [
+                'email-template-uid', ['guests' => [
                     'ABCD1234',
-                    'ABCD2345',
+                    'ABCD2345'
                 ]]
             ));
 

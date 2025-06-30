@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AirLST\SdkPhp\Tests;
 
+use AirLST\SdkPhp\Client\AirLST;
 use AirLST\SdkPhp\CoreApi;
 use AirLST\SdkPhp\Resources\EmailResource;
 use AirLST\SdkPhp\Resources\EventResource;
