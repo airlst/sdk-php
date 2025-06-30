@@ -1,0 +1,8 @@
+/.idea
+/vendor
+/.coverage
+/.phpunit.cache
+composer.lock
+.phpunit.result.cache
+.php-cs-fixer.cache
+tests/file.xlsx

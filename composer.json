@@ -1,0 +1,77 @@
+{
+  "name": "airlst/sdk-php",
+  "description": "This package is a SDK for handling AirLST Core API calls",
+  "type": "library",
+  "authors": [
+    {
+      "name": "Jantinn Erezo",
+      "email": "j.erezo@airlst.com",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": "^8.3",
+    "saloonphp/saloon": "3.0"
+  },
+  "require-dev": {
+    "airlst/php-cs-fixer-config": "^3.6",
+    "airlst/phpstan-config": "dev-master",
+    "airlst/rector-config": "dev-master",
+    "crescat-io/saloon-sdk-generator": "^1.10",
+    "ergebnis/composer-normalize": "^2.47",
+    "friendsofphp/php-cs-fixer": "^2.0 || ^3.14",
+    "mockery/mockery": "^1.4",
+    "orchestra/testbench": "^6.0 || ^7.0 || ^8.0 || ^9.0",
+    "phpstan/phpstan": "^2.1",
+    "phpunit/phpunit": "^8.0 || ^9.0 || ^10.0",
+    "rector/swiss-knife": "^2.2"
+  },
+  "minimum-stability": "stable",
+  "autoload": {
+    "psr-4": {
+      "AirLST\\SdkPhp\\": "src",
+      "AirLST\\SdkPhp\\Client\\": "build"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "AirLST\\SdkPhp\\Tests\\": "tests"
+    }
+  },
+  "config": {
+    "allow-plugins": {
+      "ergebnis/composer-normalize": true,
+      "pestphp/pest-plugin": true,
+      "php-http/discovery": true,
+      "phpstan/extension-installer": true
+    },
+    "optimize-autoloader": true,
+    "preferred-install": "dist",
+    "sort-packages": true
+  },
+  "scripts": {
+    "ci": [
+      "@composer dump --strict-psr",
+      "@composer normalize",
+      "@composer rector",
+      "@composer cs-fixer",
+      "@composer phpstan",
+      "@composer test"
+    ],
+    "cs-fixer": "PHP_CS_FIXER_IGNORE_ENV=1 ./vendor/bin/php-cs-fixer fix --verbose --config=.php-cs-fixer.php",
+    "dev": [
+      "Composer\\Config::disableProcessTimeout",
+      "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" \"php artisan pail --timeout=0\" --names=server,queue,logs"
+    ],
+    "phpstan": "./vendor/bin/phpstan analyse -c phpstan.php --memory-limit=2G",
+    "rector": "./vendor/bin/rector",
+    "test": [
+      "Composer\\Config::disableProcessTimeout",
+      "./vendor/bin/phpunit --stop-on-failure"
+    ],
+    "test-coverage": [
+      "Composer\\Config::disableProcessTimeout",
+      "./vendor/bin/phpunit --stop-on-failure --coverage-html /var/www/html/.coverage/backend"
+    ]
+  }
+}
