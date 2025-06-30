@@ -39,7 +39,7 @@ class CoreApi extends Connector implements HasPagination
             return new GuestResource($this);
         }
         
-        $this->baseUrl = $this->baseUrl . "/events/{$eventId}/guests";
+        $this->baseUrl .= "/events/{$eventId}/guests";
 
         return new GuestResource($this);
     }
@@ -50,7 +50,7 @@ class CoreApi extends Connector implements HasPagination
             return new EmailResource($this);
         }
 
-        $this->baseUrl = $this->baseUrl . "/events/{$eventId}/emails/email-templates";
+        $this->baseUrl .= "/events/{$eventId}/emails/email-templates";
 
         return new EmailResource($this);
     }
