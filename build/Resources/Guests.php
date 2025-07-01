@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AirLST\SdkPhp\Resources;
 
+use AirLST\SdkPhp\Paginator;
 use AirLST\SdkPhp\Requests\Guests\ArchiveGuest;
 use AirLST\SdkPhp\Requests\Guests\CheckinGuest;
 use AirLST\SdkPhp\Requests\Guests\CreateCompanionGuest;
@@ -105,8 +106,8 @@ class Guests extends Resource
         ?string $filtersStatuseq = null,
         ?string $sortsRole0 = null,
         ?int $since = null,
-    ): \Saloon\PaginationPlugin\PagedPaginator {
-        return $this->connector->paginate(new GetGuests($eventUuid, $perPage, $page, $search, $filtersStatuseq, $sortsRole0, $since)); // @phpstan-ignore method.notFound
+    ): Paginator {
+        return $this->connector->paginate(new GetGuests($eventUuid, $perPage, $page, $search, $filtersStatuseq, $sortsRole0, $since));
     }
 
     /**

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AirLST\SdkPhp\Builder\Generators;
 
+use AirLST\SdkPhp\Paginator;
 use Crescat\SaloonSdkGenerator\Data\Generator\ApiSpecification;
 use Crescat\SaloonSdkGenerator\Data\Generator\Endpoint;
 use Crescat\SaloonSdkGenerator\Data\Generator\Parameter;
@@ -15,8 +16,8 @@ use Nette\PhpGenerator\Literal;
 use Nette\PhpGenerator\Method;
 use Nette\PhpGenerator\PhpFile;
 use Saloon\Http\Response;
-use Saloon\PaginationPlugin\PagedPaginator;
 
+use function implode;
 use function in_array;
 use function sprintf;
 
@@ -44,6 +45,8 @@ class ResourceGenerator extends Generator
             ->addUse("{$this->config->namespace}\\Resource");
 
         $duplicateCounter = 1;
+
+        $usesPaginator = false;
 
         foreach ($endpoints as $endpoint) {
             $requestClassName = NameHelper::resourceClassName($endpoint->name);
@@ -73,11 +76,6 @@ class ResourceGenerator extends Generator
                     ->addComment('@todo Fix duplicated method name');
             }
 
-            $paginated = collect($endpoint->queryParameters)
-                ->contains(fn (Parameter $parameter): bool => $parameter->name === 'page');
-
-            $method->setReturnType($paginated ? PagedPaginator::class : Response::class);
-
             $args = [];
 
             foreach ($endpoint->pathParameters as $parameter) {
@@ -102,19 +100,23 @@ class ResourceGenerator extends Generator
                 $args[] = new Literal(sprintf('$%s', NameHelper::safeVariableName($parameter->name)));
             }
 
-            if ($paginated) {
-                $method
-                    ->setBody(
-                        sprintf('return $this->connector->paginate(new %s(%s)); // @phpstan-ignore method.notFound', $requestClassNameAlias ?? $requestClassName, implode(', ', $args))
-                    );
+            $paginated = collect($endpoint->queryParameters)
+                ->contains(fn (Parameter $parameter): bool => $parameter->name === 'page');
 
-                continue;
+            if ($paginated) {
+                $usesPaginator = true;
             }
 
-            $method->setBody(sprintf('return $this->connector->send(new %s(%s));', $requestClassNameAlias ?? $requestClassName, implode(', ', $args)));
+            $method->setBody(sprintf($paginated ? 'return $this->connector->paginate(new %s(%s));' : 'return $this->connector->send(new %s(%s));', $requestClassNameAlias ?? $requestClassName, implode(', ', $args)));
+
+            $method->setReturnType($paginated ? Paginator::class : Response::class);
         }
 
         $namespace->add($classType);
+
+        if ($usesPaginator) {
+            $namespace->addUse(Paginator::class);
+        }
 
         return $classFile;
     }

@@ -14,7 +14,6 @@ use AirLST\SdkPhp\Resources\Guests;
 use Saloon\Http\Connector;
 use Saloon\Http\Request;
 use Saloon\PaginationPlugin\Contracts\HasPagination;
-use Saloon\PaginationPlugin\PagedPaginator;
 
 /**
  * AirLST API.
@@ -37,7 +36,7 @@ class CoreApi extends Connector implements HasPagination
         $this->baseUrl = $baseUrl;
     }
 
-    public function paginate(Request $request): PagedPaginator
+    public function paginate(Request $request): Paginator
     {
         return new Paginator($this, $request);
     }

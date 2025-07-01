@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AirLST\SdkPhp\Builder\Generators;
 
+use AirLST\SdkPhp\Paginator;
 use Crescat\SaloonSdkGenerator\Data\Generator\ApiSpecification;
 use Crescat\SaloonSdkGenerator\Data\Generator\Endpoint;
 use Crescat\SaloonSdkGenerator\Generator;
@@ -14,7 +15,6 @@ use Nette\PhpGenerator\PhpFile;
 use Saloon\Http\Connector;
 use Saloon\Http\Request;
 use Saloon\PaginationPlugin\Contracts\HasPagination;
-use Saloon\PaginationPlugin\PagedPaginator;
 
 use function is_null;
 use function sprintf;
@@ -69,7 +69,7 @@ class ConnectorGenerator extends Generator
 
         $classType->addMethod('paginate')
             ->setPublic()
-            ->setReturnType(PagedPaginator::class)
+            ->setReturnType(Paginator::class)
             ->setBody('return new Paginator($this, $request);')
             ->addParameter('request')
             ->setType(Request::class);
@@ -84,7 +84,7 @@ class ConnectorGenerator extends Generator
             ->addNamespace("{$this->config->namespace}")
             ->addUse(Connector::class)
             ->addUse(Request::class)
-            ->addUse(PagedPaginator::class)
+            ->addUse(Paginator::class)
             ->addUse(HasPagination::class);
 
         $collections = collect($specification->endpoints)
