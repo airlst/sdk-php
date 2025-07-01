@@ -6,11 +6,12 @@ namespace AirLST\SdkPhp\Requests\Guests;
 
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
+use Saloon\PaginationPlugin\Contracts\Paginatable;
 
 /**
  * getGuests.
  */
-class GetGuests extends Request
+class GetGuests extends Request implements Paginatable
 {
     protected Method $method = Method::GET;
 

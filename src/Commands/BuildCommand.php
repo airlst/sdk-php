@@ -7,6 +7,7 @@ namespace AirLST\SdkPhp\Builder\Commands;
 use AirLST\SdkPhp\Builder\Generators\BaseResourceGenerator;
 use AirLST\SdkPhp\Builder\Generators\ConnectorGenerator;
 use AirLST\SdkPhp\Builder\Generators\PaginatorGenerator;
+use AirLST\SdkPhp\Builder\Generators\RequestGenerator;
 use AirLST\SdkPhp\Builder\Generators\ResourceGenerator;
 use Crescat\SaloonSdkGenerator\CodeGenerator;
 use Crescat\SaloonSdkGenerator\Data\Generator\Config;
@@ -74,6 +75,7 @@ class BuildCommand extends Command
 
         $generator = new CodeGenerator(
             $config,
+            requestGenerator: new RequestGenerator($config),
             resourceGenerator: new ResourceGenerator($config),
             connectorGenerator: new ConnectorGenerator($config),
             baseResourceGenerator: new BaseResourceGenerator($config),
