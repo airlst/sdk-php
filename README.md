@@ -6,7 +6,7 @@ This package provides a PHP SDK for the Core API, allowing developers to easily 
 It is built using AirLST OpenAPI specifications and is built with the help of crescat-io/saloon-sdk-generator tool.
 
 ## Requirements
-- PHP >= 8.3 
+- PHP >= 8.4 
 - Composer
 
 
@@ -18,11 +18,11 @@ composer require airlst/sdk-php
 
 ## Usage
 ``` php
-use AirLST\SdkPhp\Client\CoreApi;
+use AirLST\SdkPhp\CoreApi;
 
 $connector = new CoreApi('api-key');
 
-$response = $connector->guests()->getGuests('event-uuid');
+$response = $connector->guest()->getGuests('event-uuid');
 ```
 
 ## Contributing
