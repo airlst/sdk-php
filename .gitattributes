@@ -1,6 +1,5 @@
 * text=auto eol=lf
 /.github export-ignore
-/build export-ignore
 /src export-ignore
 /storage export-ignore
 /tests export-ignore
