@@ -106,7 +106,7 @@ class Guests extends Resource
         ?string $sortsRole0 = null,
         ?int $since = null,
     ): Response {
-        return $this->connector->send(new GetGuests($eventUuid, $perPage, $page, $search, $filtersStatuseq, $sortsRole0, $since));
+        return $this->connector->paginate(new GetGuests($eventUuid, $perPage, $page, $search, $filtersStatuseq, $sortsRole0, $since)); // @phpstan-ignore method.notFound
     }
 
     /**

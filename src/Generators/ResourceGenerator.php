@@ -98,6 +98,17 @@ class ResourceGenerator extends Generator
                 $args[] = new Literal(sprintf('$%s', NameHelper::safeVariableName($parameter->name)));
             }
 
+            $paginated = collect($endpoint->queryParameters)
+                ->contains(fn (Parameter $parameter): bool => $parameter->name === 'page');
+
+            if ($paginated) {
+                $method->setBody(
+                    sprintf('return $this->connector->paginate(new %s(%s)); // @phpstan-ignore method.notFound', $requestClassNameAlias ?? $requestClassName, implode(', ', $args))
+                );
+
+                continue;
+            }
+
             $method->setBody(sprintf('return $this->connector->send(new %s(%s));', $requestClassNameAlias ?? $requestClassName, implode(', ', $args)));
         }
 
