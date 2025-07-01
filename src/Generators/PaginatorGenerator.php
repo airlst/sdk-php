@@ -44,7 +44,7 @@ class PaginatorGenerator
 
         $namespace = $classFile
             ->setStrictTypes()
-            ->addNamespace('AirLST\\SdkPhp')
+            ->addNamespace('AirLST\SdkPhp')
             ->addUse(PagedPaginator::class)
             ->addUse(Request::class)
             ->addUse(Response::class);
