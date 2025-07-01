@@ -1,7 +1,7 @@
 <?php
 require __DIR__ . '/vendor/autoload.php';
 
-use AirLST\SdkPhp\Commands\BuildCommand;
+use AirLST\SdkPhp\Builder\Commands\BuildCommand;
 use Illuminate\Foundation\Application; // Use the full Application
 use Illuminate\Console\OutputStyle;
 use Symfony\Component\Console\Input\ArrayInput;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AirLST\SdkPhp\Client\Requests\Contacts;
+namespace AirLST\SdkPhp\Requests\Contacts;
 
 use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;

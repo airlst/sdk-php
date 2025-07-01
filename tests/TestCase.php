@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AirLST\SdkPhp\Tests;
 
-use AirLST\SdkPhp\Client\CoreApi;
+use AirLST\SdkPhp\CoreApi;
 use PHPUnit\Framework\TestCase as BaseTestCase;
 use Saloon\Http\Faking\MockClient;
 use Saloon\Http\Faking\MockResponse;

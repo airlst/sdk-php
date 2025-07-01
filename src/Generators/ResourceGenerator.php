@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AirLST\SdkPhp\Generators;
+namespace AirLST\SdkPhp\Builder\Generators;
 
 use Crescat\SaloonSdkGenerator\Data\Generator\ApiSpecification;
 use Crescat\SaloonSdkGenerator\Data\Generator\Endpoint;

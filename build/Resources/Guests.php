@@ -2,24 +2,24 @@
 
 declare(strict_types=1);
 
-namespace AirLST\SdkPhp\Client\Resource;
+namespace AirLST\SdkPhp\Resources;
 
-use AirLST\SdkPhp\Client\Requests\Guests\ArchiveGuest;
-use AirLST\SdkPhp\Client\Requests\Guests\CheckinGuest;
-use AirLST\SdkPhp\Client\Requests\Guests\CreateCompanionGuest;
-use AirLST\SdkPhp\Client\Requests\Guests\CreateGuests;
-use AirLST\SdkPhp\Client\Requests\Guests\CreateRecommendedGuest;
-use AirLST\SdkPhp\Client\Requests\Guests\CreateTemporaryUpload;
-use AirLST\SdkPhp\Client\Requests\Guests\DeleteGuest;
-use AirLST\SdkPhp\Client\Requests\Guests\GetGuest;
-use AirLST\SdkPhp\Client\Requests\Guests\GetGuestAttachmentDownloadUrl;
-use AirLST\SdkPhp\Client\Requests\Guests\GetGuestAttachments;
-use AirLST\SdkPhp\Client\Requests\Guests\GetGuests;
-use AirLST\SdkPhp\Client\Requests\Guests\RestoreGuest;
-use AirLST\SdkPhp\Client\Requests\Guests\UpdateGuest;
-use AirLST\SdkPhp\Client\Requests\Guests\UpdateGuestEmailOptInStatus;
-use AirLST\SdkPhp\Client\Requests\Guests\ValidateGuestCode;
-use AirLST\SdkPhp\Client\Resource;
+use AirLST\SdkPhp\Requests\Guests\ArchiveGuest;
+use AirLST\SdkPhp\Requests\Guests\CheckinGuest;
+use AirLST\SdkPhp\Requests\Guests\CreateCompanionGuest;
+use AirLST\SdkPhp\Requests\Guests\CreateGuests;
+use AirLST\SdkPhp\Requests\Guests\CreateRecommendedGuest;
+use AirLST\SdkPhp\Requests\Guests\CreateTemporaryUpload;
+use AirLST\SdkPhp\Requests\Guests\DeleteGuest;
+use AirLST\SdkPhp\Requests\Guests\GetGuest;
+use AirLST\SdkPhp\Requests\Guests\GetGuestAttachmentDownloadUrl;
+use AirLST\SdkPhp\Requests\Guests\GetGuestAttachments;
+use AirLST\SdkPhp\Requests\Guests\GetGuests;
+use AirLST\SdkPhp\Requests\Guests\RestoreGuest;
+use AirLST\SdkPhp\Requests\Guests\UpdateGuest;
+use AirLST\SdkPhp\Requests\Guests\UpdateGuestEmailOptInStatus;
+use AirLST\SdkPhp\Requests\Guests\ValidateGuestCode;
+use AirLST\SdkPhp\Resource;
 use Saloon\Http\Response;
 
 class Guests extends Resource

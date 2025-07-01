@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AirLST\SdkPhp\Client\Requests\Emails;
+namespace AirLST\SdkPhp\Requests\Emails;
 
 use Saloon\Enums\Method;
 use Saloon\Http\Request;

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace AirLST\SdkPhp\Commands;
+namespace AirLST\SdkPhp\Builder\Commands;
 
-use AirLST\SdkPhp\Generators\ConnectorGenerator;
-use AirLST\SdkPhp\Generators\ResourceGenerator;
+use AirLST\SdkPhp\Builder\Generators\ConnectorGenerator;
+use AirLST\SdkPhp\Builder\Generators\ResourceGenerator;
 use Crescat\SaloonSdkGenerator\CodeGenerator;
 use Crescat\SaloonSdkGenerator\Data\Generator\Config;
 use Crescat\SaloonSdkGenerator\Data\Generator\GeneratedCode;
@@ -28,7 +28,7 @@ use function str_replace;
 
 class BuildCommand extends Command
 {
-    protected const string NAMESPACE = 'AirLST\SdkPhp\Client';
+    protected const string NAMESPACE = 'AirLST\SdkPhp';
     protected const string TYPE = 'openapi';
     protected $signature = 'airlst-sdk-php:build {spec-url=https://airlst.app/openapi.yml} {--no-download}';
     protected $description = 'BuildCommand SDK';
@@ -64,6 +64,7 @@ class BuildCommand extends Command
         $config = new Config(
             'CoreApi',
             self::NAMESPACE,
+            resourceNamespaceSuffix: 'Resources',
         );
 
         $generator = new CodeGenerator(

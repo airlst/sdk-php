@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AirLST\SdkPhp;
+namespace AirLST\SdkPhp\Builder;
 
 use Saloon\Http\Request;
 use Saloon\Http\Response;

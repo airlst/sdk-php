@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AirLST\SdkPhp\Client\Requests\Events;
+namespace AirLST\SdkPhp\Requests\Events;
 
 use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;

@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace AirLST\SdkPhp\Client\Resource;
+namespace AirLST\SdkPhp\Resources;
 
-use AirLST\SdkPhp\Client\Requests\BookableGroups\DeleteBookablesReservation;
-use AirLST\SdkPhp\Client\Requests\BookableGroups\GetAvailabilities;
-use AirLST\SdkPhp\Client\Requests\BookableGroups\ListBookableGroups;
-use AirLST\SdkPhp\Client\Requests\BookableGroups\ListBookablesForGroup;
-use AirLST\SdkPhp\Client\Requests\BookableGroups\StoreBookablesReservations;
-use AirLST\SdkPhp\Client\Resource;
+use AirLST\SdkPhp\Requests\BookableGroups\DeleteBookablesReservation;
+use AirLST\SdkPhp\Requests\BookableGroups\GetAvailabilities;
+use AirLST\SdkPhp\Requests\BookableGroups\ListBookableGroups;
+use AirLST\SdkPhp\Requests\BookableGroups\ListBookablesForGroup;
+use AirLST\SdkPhp\Requests\BookableGroups\StoreBookablesReservations;
+use AirLST\SdkPhp\Resource;
 use Saloon\Http\Response;
 
 class BookableGroups extends Resource

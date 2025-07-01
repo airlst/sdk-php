@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace AirLST\SdkPhp\Client\Resource;
+namespace AirLST\SdkPhp\Resources;
 
-use AirLST\SdkPhp\Client\Requests\Contacts\GetContactDetails;
-use AirLST\SdkPhp\Client\Requests\Contacts\GetContactEvents;
-use AirLST\SdkPhp\Client\Requests\Contacts\ValidateContactCode;
-use AirLST\SdkPhp\Client\Resource;
+use AirLST\SdkPhp\Requests\Contacts\GetContactDetails;
+use AirLST\SdkPhp\Requests\Contacts\GetContactEvents;
+use AirLST\SdkPhp\Requests\Contacts\ValidateContactCode;
+use AirLST\SdkPhp\Resource;
 use Saloon\Http\Response;
 
 class Contacts extends Resource

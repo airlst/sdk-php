@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AirLST\SdkPhp\Tests\Build;
 
-use AirLST\SdkPhp\Client\CoreApi;
+use AirLST\SdkPhp\CoreApi;
 use AirLST\SdkPhp\Tests\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 

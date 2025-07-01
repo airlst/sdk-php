@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AirLST\SdkPhp\Client\Requests\Company;
+namespace AirLST\SdkPhp\Requests\Company;
 
 use Saloon\Enums\Method;
 use Saloon\Http\Request;

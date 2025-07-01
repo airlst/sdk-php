@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace AirLST\SdkPhp\Client\Resource;
+namespace AirLST\SdkPhp\Resources;
 
-use AirLST\SdkPhp\Client\Requests\Company\GetCompanyEvents;
-use AirLST\SdkPhp\Client\Resource;
+use AirLST\SdkPhp\Requests\Company\GetCompanyEvents;
+use AirLST\SdkPhp\Resource;
 use Saloon\Http\Response;
 
 class Company extends Resource

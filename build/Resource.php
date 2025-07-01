@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AirLST\SdkPhp\Client;
+namespace AirLST\SdkPhp;
 
 use Saloon\Http\Connector;
 

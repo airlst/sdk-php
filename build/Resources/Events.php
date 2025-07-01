@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace AirLST\SdkPhp\Client\Resource;
+namespace AirLST\SdkPhp\Resources;
 
-use AirLST\SdkPhp\Client\Requests\Events\GetEvent;
-use AirLST\SdkPhp\Client\Requests\Events\GetSignedStorageUrl;
-use AirLST\SdkPhp\Client\Requests\Events\SendEmailTemplate;
-use AirLST\SdkPhp\Client\Resource;
+use AirLST\SdkPhp\Requests\Events\GetEvent;
+use AirLST\SdkPhp\Requests\Events\GetSignedStorageUrl;
+use AirLST\SdkPhp\Requests\Events\SendEmailTemplate;
+use AirLST\SdkPhp\Resource;
 use Saloon\Http\Response;
 
 class Events extends Resource

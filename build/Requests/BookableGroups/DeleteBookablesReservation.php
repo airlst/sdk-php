@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AirLST\SdkPhp\Client\Requests\BookableGroups;
+namespace AirLST\SdkPhp\Requests\BookableGroups;
 
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
