@@ -9,5 +9,5 @@
 /build.php export-ignore
 /composer.lock export-ignore
 /phpstan.php export-ignore
-/phpunit.xml.dist export-ignore
+/phpunit.xml export-ignore
 /rector.php export-ignore
