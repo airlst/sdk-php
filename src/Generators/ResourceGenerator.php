@@ -15,6 +15,7 @@ use Nette\PhpGenerator\Literal;
 use Nette\PhpGenerator\Method;
 use Nette\PhpGenerator\PhpFile;
 use Saloon\Http\Response;
+use Saloon\PaginationPlugin\PagedPaginator;
 
 use function in_array;
 use function sprintf;
@@ -72,7 +73,10 @@ class ResourceGenerator extends Generator
                     ->addComment('@todo Fix duplicated method name');
             }
 
-            $method->setReturnType(Response::class);
+            $paginated = collect($endpoint->queryParameters)
+                ->contains(fn (Parameter $parameter): bool => $parameter->name === 'page');
+
+            $method->setReturnType($paginated ? PagedPaginator::class : Response::class);
 
             $args = [];
 
@@ -98,13 +102,11 @@ class ResourceGenerator extends Generator
                 $args[] = new Literal(sprintf('$%s', NameHelper::safeVariableName($parameter->name)));
             }
 
-            $paginated = collect($endpoint->queryParameters)
-                ->contains(fn (Parameter $parameter): bool => $parameter->name === 'page');
-
             if ($paginated) {
-                $method->setBody(
-                    sprintf('return $this->connector->paginate(new %s(%s)); // @phpstan-ignore method.notFound', $requestClassNameAlias ?? $requestClassName, implode(', ', $args))
-                );
+                $method
+                    ->setBody(
+                        sprintf('return $this->connector->paginate(new %s(%s)); // @phpstan-ignore method.notFound', $requestClassNameAlias ?? $requestClassName, implode(', ', $args))
+                    );
 
                 continue;
             }

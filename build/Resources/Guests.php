@@ -105,7 +105,7 @@ class Guests extends Resource
         ?string $filtersStatuseq = null,
         ?string $sortsRole0 = null,
         ?int $since = null,
-    ): Response {
+    ): \Saloon\PaginationPlugin\PagedPaginator {
         return $this->connector->paginate(new GetGuests($eventUuid, $perPage, $page, $search, $filtersStatuseq, $sortsRole0, $since)); // @phpstan-ignore method.notFound
     }
 
