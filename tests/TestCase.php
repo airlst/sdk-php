@@ -29,7 +29,6 @@ class TestCase extends BaseTestCase
     {
         parent::setUp();
 
-        MockClient::destroyGlobal();
         Config::preventStrayRequests();
 
         $this->core = new CoreApi('api-key');
