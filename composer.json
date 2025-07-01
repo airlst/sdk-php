@@ -51,6 +51,7 @@
     "sort-packages": true
   },
   "scripts": {
+    "build": "php build.php",
     "ci": [
       "@composer dump --strict-psr",
       "@composer normalize",

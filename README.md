@@ -29,5 +29,5 @@ $response = $connector->guests()->getGuests('event-uuid');
 
 If you want to contribute to this SDK, you can generate the SDK from the fresh OpenAPI specification using the following command:
 ``` bash
-php build.php
+composer build
 ```
