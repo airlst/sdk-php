@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AirLST\SdkPhp\Builder\Commands;
 
 use AirLST\SdkPhp\Builder\Generators\ConnectorGenerator;
+use AirLST\SdkPhp\Builder\Generators\PaginatorGenerator;
 use AirLST\SdkPhp\Builder\Generators\ResourceGenerator;
 use Crescat\SaloonSdkGenerator\CodeGenerator;
 use Crescat\SaloonSdkGenerator\Data\Generator\Config;
@@ -66,6 +67,9 @@ class BuildCommand extends Command
             self::NAMESPACE,
             resourceNamespaceSuffix: 'Resources',
         );
+
+        $paginatorGenerator = new PaginatorGenerator();
+        $this->dumpToFile($paginatorGenerator->generate());
 
         $generator = new CodeGenerator(
             $config,

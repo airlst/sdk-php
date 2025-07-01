@@ -12,11 +12,14 @@ use AirLST\SdkPhp\Resources\Emails;
 use AirLST\SdkPhp\Resources\Events;
 use AirLST\SdkPhp\Resources\Guests;
 use Saloon\Http\Connector;
+use Saloon\Http\Request;
+use Saloon\PaginationPlugin\Contracts\HasPagination;
+use Saloon\PaginationPlugin\PagedPaginator;
 
 /**
  * AirLST API.
  */
-class CoreApi extends Connector
+class CoreApi extends Connector implements HasPagination
 {
     protected string $baseUrl = 'https://airlst.app';
 
@@ -32,6 +35,11 @@ class CoreApi extends Connector
     public function setBaseUrl(string $baseUrl): void
     {
         $this->baseUrl = $baseUrl;
+    }
+
+    public function paginate(Request $request): PagedPaginator
+    {
+        return new Paginator($this, $request);
     }
 
     public function bookableGroups(): BookableGroups

@@ -2,12 +2,15 @@
 
 declare(strict_types=1);
 
-namespace AirLST\SdkPhp\Builder;
+namespace AirLST\SdkPhp;
 
 use Saloon\Http\Request;
 use Saloon\Http\Response;
 use Saloon\PaginationPlugin\PagedPaginator;
 
+/**
+ * Paginator.
+ */
 class Paginator extends PagedPaginator
 {
     protected function isLastPage(Response $response): bool

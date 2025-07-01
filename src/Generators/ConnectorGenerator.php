@@ -12,6 +12,9 @@ use Exception;
 use Nette\PhpGenerator\ClassType;
 use Nette\PhpGenerator\PhpFile;
 use Saloon\Http\Connector;
+use Saloon\Http\Request;
+use Saloon\PaginationPlugin\Contracts\HasPagination;
+use Saloon\PaginationPlugin\PagedPaginator;
 
 use function is_null;
 use function sprintf;
@@ -27,6 +30,7 @@ class ConnectorGenerator extends Generator
     {
         $classType = new ClassType($this->config->connectorName);
         $classType->setExtends(Connector::class);
+        $classType->setImplements([HasPagination::class]);
 
         if ($specification->name !== null && $specification->name !== '' && $specification->name !== '0') {
             $classType->addComment($specification->name);
@@ -63,6 +67,13 @@ class ConnectorGenerator extends Generator
             ->addParameter('baseUrl')
             ->setType('string');
 
+        $classType->addMethod('paginate')
+            ->setPublic()
+            ->setReturnType(PagedPaginator::class)
+            ->setBody('return new Paginator($this, $request);')
+            ->addParameter('request')
+            ->setType(Request::class);
+
         $classType->addMethod('defaultHeaders')
             ->setReturnType('array')
             ->setProtected()
@@ -71,7 +82,10 @@ class ConnectorGenerator extends Generator
         $namespace = $classFile
             ->setStrictTypes()
             ->addNamespace("{$this->config->namespace}")
-            ->addUse(Connector::class);
+            ->addUse(Connector::class)
+            ->addUse(Request::class)
+            ->addUse(PagedPaginator::class)
+            ->addUse(HasPagination::class);
 
         $collections = collect($specification->endpoints)
             ->map(fn (Endpoint $endpoint): string => NameHelper::connectorClassName($endpoint->collection !== null && $endpoint->collection !== '' && $endpoint->collection !== '0' ? $endpoint->collection : $this->config->fallbackResourceName)) // @phpstan-ignore-line
