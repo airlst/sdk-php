@@ -19,16 +19,23 @@ class GetGuestsDocumentsUrls extends Request implements HasBody
     protected Method $method = Method::POST;
 
     /**
-     * @param mixed $eventUuid    Event UUID
-     * @param mixed $documentUuid Document UUID
+     * @param mixed      $eventUuid    Event UUID
+     * @param mixed      $documentUuid Document UUID
+     * @param array|null $guests       Array of guest codes to which you want to download their documents
      */
     public function __construct(
         protected mixed $eventUuid,
         protected mixed $documentUuid,
+        protected ?array $guests = null,
     ) {}
 
     public function resolveEndpoint(): string
     {
         return "/api/events/{$this->eventUuid}/documents/{$this->documentUuid}/download";
+    }
+
+    public function defaultBody(): array
+    {
+        return array_filter(['guests' => $this->guests]);
     }
 }

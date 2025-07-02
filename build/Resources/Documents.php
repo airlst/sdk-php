@@ -14,10 +14,11 @@ class Documents extends Resource
     /**
      * @param mixed $eventUuid    Event UUID
      * @param mixed $documentUuid Document UUID
+     * @param array $guests       Array of guest codes to which you want to download their documents
      */
-    public function getGuestsDocumentsUrls(mixed $eventUuid, mixed $documentUuid): Response
+    public function getGuestsDocumentsUrls(mixed $eventUuid, mixed $documentUuid, ?array $guests = null): Response
     {
-        return $this->connector->send(new GetGuestsDocumentsUrls($eventUuid, $documentUuid));
+        return $this->connector->send(new GetGuestsDocumentsUrls($eventUuid, $documentUuid, $guests));
     }
 
     /**

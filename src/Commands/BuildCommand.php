@@ -9,6 +9,7 @@ use AirLST\SdkPhp\Builder\Generators\ConnectorGenerator;
 use AirLST\SdkPhp\Builder\Generators\PaginatorGenerator;
 use AirLST\SdkPhp\Builder\Generators\RequestGenerator;
 use AirLST\SdkPhp\Builder\Generators\ResourceGenerator;
+use AirLST\SdkPhp\Builder\Parsers\OpenApiParser;
 use Crescat\SaloonSdkGenerator\CodeGenerator;
 use Crescat\SaloonSdkGenerator\Data\Generator\Config;
 use Crescat\SaloonSdkGenerator\Data\Generator\GeneratedCode;
@@ -80,6 +81,8 @@ class BuildCommand extends Command
             connectorGenerator: new ConnectorGenerator($config),
             baseResourceGenerator: new BaseResourceGenerator($config),
         );
+
+        Factory::registerParser(self::TYPE, OpenApiParser::class);
 
         $this->dumpGeneratedFiles(
             $generator->run(Factory::parse(self::TYPE, $specFile))

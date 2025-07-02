@@ -15,13 +15,20 @@ use Saloon\Http\Response;
 class BookableGroups extends Resource
 {
     /**
-     * @param mixed $eventUuid         Event UUID
-     * @param mixed $bookableGroupUuid BookableGroup UUID
-     * @param mixed $bookableUuid      Bookable object UUID
+     * @param mixed  $eventUuid         Event UUID
+     * @param mixed  $bookableGroupUuid BookableGroup UUID
+     * @param mixed  $bookableUuid      Bookable object UUID
+     * @param string $startDate         Start date
+     * @param string $endDate           End date
      */
-    public function getAvailabilities(mixed $eventUuid, mixed $bookableGroupUuid, mixed $bookableUuid): Response
-    {
-        return $this->connector->send(new GetAvailabilities($eventUuid, $bookableGroupUuid, $bookableUuid));
+    public function getAvailabilities(
+        mixed $eventUuid,
+        mixed $bookableGroupUuid,
+        mixed $bookableUuid,
+        string $startDate,
+        string $endDate,
+    ): Response {
+        return $this->connector->send(new GetAvailabilities($eventUuid, $bookableGroupUuid, $bookableUuid, $startDate, $endDate));
     }
 
     /**
@@ -52,11 +59,16 @@ class BookableGroups extends Resource
     }
 
     /**
-     * @param mixed $eventUuid         Event UUID
-     * @param mixed $bookableGroupUuid BookableGroup UUID
+     * @param mixed  $eventUuid         Event UUID
+     * @param mixed  $bookableGroupUuid BookableGroup UUID
+     * @param string $guestCode         A valid guest code that exists in the event’s bookings
      */
-    public function storeBookablesReservations(mixed $eventUuid, mixed $bookableGroupUuid): Response
-    {
-        return $this->connector->send(new StoreBookablesReservations($eventUuid, $bookableGroupUuid));
+    public function storeBookablesReservations(
+        mixed $eventUuid,
+        mixed $bookableGroupUuid,
+        string $guestCode,
+        array $reservations,
+    ): Response {
+        return $this->connector->send(new StoreBookablesReservations($eventUuid, $bookableGroupUuid, $guestCode, $reservations));
     }
 }
