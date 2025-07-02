@@ -28,8 +28,11 @@ class Contacts extends Resource
         return $this->connector->send(new GetContactDetails($contactCode));
     }
 
-    public function validateContactCode(): Response
+    /**
+     * @param string $code The contact code
+     */
+    public function validateContactCode(?string $code = null): Response
     {
-        return $this->connector->send(new ValidateContactCode());
+        return $this->connector->send(new ValidateContactCode($code));
     }
 }

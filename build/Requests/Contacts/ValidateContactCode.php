@@ -18,10 +18,20 @@ class ValidateContactCode extends Request implements HasBody
 
     protected Method $method = Method::POST;
 
-    public function __construct() {}
+    /**
+     * @param string|null $code The contact code
+     */
+    public function __construct(
+        protected ?string $code = null,
+    ) {}
 
     public function resolveEndpoint(): string
     {
         return '/api/companies/contacts/validate-code';
+    }
+
+    public function defaultBody(): array
+    {
+        return array_filter(['code' => $this->code]);
     }
 }

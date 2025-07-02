@@ -35,12 +35,22 @@ class Guests extends Resource
     }
 
     /**
-     * @param mixed $eventUuid Event UUID
-     * @param mixed $guestCode Guest code
+     * @param mixed  $eventUuid Event UUID
+     * @param mixed  $guestCode Guest code
+     * @param string $type      The type of checkin
+     * @param int    $timestamp Checkin/Checkout timestamp in unix timestamp format
+     * @param string $device    Checkin/Checkout device identifier
+     * @param string $location  Checkin/Checkout location identifier
      */
-    public function checkinGuest(mixed $eventUuid, mixed $guestCode): Response
-    {
-        return $this->connector->send(new CheckinGuest($eventUuid, $guestCode));
+    public function checkinGuest(
+        mixed $eventUuid,
+        mixed $guestCode,
+        string $type,
+        int $timestamp,
+        ?string $device = null,
+        ?string $location = null,
+    ): Response {
+        return $this->connector->send(new CheckinGuest($eventUuid, $guestCode, $type, $timestamp, $device, $location));
     }
 
     /**
@@ -53,12 +63,24 @@ class Guests extends Resource
     }
 
     /**
-     * @param mixed $eventUuid Event UUID
-     * @param mixed $guestCode Guest code
+     * @param mixed  $eventUuid          Event UUID
+     * @param mixed  $guestCode          Guest code
+     * @param string $status             The guest status
+     * @param array  $extendedFields     Extended fields values mapped with their keys
+     * @param bool   $sendAutomatedEmail Send automated email to the guest with the booking details
+     * @param array  $booking            Booking details for guest
+     * @param array  $contact            Contact details for guest
      */
-    public function updateGuest(mixed $eventUuid, mixed $guestCode): Response
-    {
-        return $this->connector->send(new UpdateGuest($eventUuid, $guestCode));
+    public function updateGuest(
+        mixed $eventUuid,
+        mixed $guestCode,
+        ?string $status = null,
+        ?array $extendedFields = null,
+        ?bool $sendAutomatedEmail = null,
+        ?array $booking = null,
+        ?array $contact = null,
+    ): Response {
+        return $this->connector->send(new UpdateGuest($eventUuid, $guestCode, $status, $extendedFields, $sendAutomatedEmail, $booking, $contact));
     }
 
     /**
@@ -111,11 +133,24 @@ class Guests extends Resource
     }
 
     /**
-     * @param mixed $eventUuid Event UUID
+     * @param mixed  $eventUuid          Event UUID
+     * @param string $status             The guest status
+     * @param array  $extendedFields     Extended fields values mapped with their keys
+     * @param bool   $sendAutomatedEmail Send automated email to the guest with the booking details
+     * @param array  $booking            Booking details for guest
+     * @param array  $contact            Contact details for guest
+     * @param array  $companions         Array of companions of the main guest
      */
-    public function createGuests(mixed $eventUuid): Response
-    {
-        return $this->connector->send(new CreateGuests($eventUuid));
+    public function createGuests(
+        mixed $eventUuid,
+        ?string $status = null,
+        ?array $extendedFields = null,
+        ?bool $sendAutomatedEmail = null,
+        ?array $booking = null,
+        ?array $contact = null,
+        ?array $companions = null,
+    ): Response {
+        return $this->connector->send(new CreateGuests($eventUuid, $status, $extendedFields, $sendAutomatedEmail, $booking, $contact, $companions));
     }
 
     /**
@@ -128,46 +163,74 @@ class Guests extends Resource
     }
 
     /**
-     * @param mixed $eventUuid     Event UUID
-     * @param mixed $mainGuestCode The code of the main guest
+     * @param mixed  $eventUuid          Event UUID
+     * @param mixed  $mainGuestCode      The code of the main guest
+     * @param string $status             The guest status
+     * @param array  $extendedFields     Extended fields values mapped with their keys
+     * @param array  $contact            Contact details for guest
+     * @param bool   $sendAutomatedEmail Send automated email to the guest with the booking details
      */
-    public function createCompanionGuest(mixed $eventUuid, mixed $mainGuestCode): Response
-    {
-        return $this->connector->send(new CreateCompanionGuest($eventUuid, $mainGuestCode));
+    public function createCompanionGuest(
+        mixed $eventUuid,
+        mixed $mainGuestCode,
+        ?string $status = null,
+        ?array $extendedFields = null,
+        ?array $contact = null,
+        ?bool $sendAutomatedEmail = null,
+    ): Response {
+        return $this->connector->send(new CreateCompanionGuest($eventUuid, $mainGuestCode, $status, $extendedFields, $contact, $sendAutomatedEmail));
     }
 
     /**
-     * @param mixed $eventUuid     Event UUID
-     * @param mixed $mainGuestCode The code of the main guest
+     * @param mixed  $eventUuid      Event UUID
+     * @param mixed  $mainGuestCode  The code of the main guest
+     * @param string $status         Recommended guest status
+     * @param array  $extendedFields Extended fields values mapped with their keys
+     * @param array  $contact        Contact details for guest
      */
-    public function createRecommendedGuest(mixed $eventUuid, mixed $mainGuestCode): Response
+    public function createRecommendedGuest(
+        mixed $eventUuid,
+        mixed $mainGuestCode,
+        ?string $status = null,
+        ?array $extendedFields = null,
+        ?array $contact = null,
+    ): Response {
+        return $this->connector->send(new CreateRecommendedGuest($eventUuid, $mainGuestCode, $status, $extendedFields, $contact));
+    }
+
+    /**
+     * @param mixed  $eventUuid        Event UUID
+     * @param mixed  $guestCode        Guest code
+     * @param string $emailOptInStatus Opt in status
+     */
+    public function updateGuestEmailOptInStatus(mixed $eventUuid, mixed $guestCode, string $emailOptInStatus): Response
     {
-        return $this->connector->send(new CreateRecommendedGuest($eventUuid, $mainGuestCode));
+        return $this->connector->send(new UpdateGuestEmailOptInStatus($eventUuid, $guestCode, $emailOptInStatus));
+    }
+
+    /**
+     * @param mixed  $eventUuid Event UUID
+     * @param string $code      The guest code
+     */
+    public function validateGuestCode(mixed $eventUuid, ?string $code = null): Response
+    {
+        return $this->connector->send(new ValidateGuestCode($eventUuid, $code));
     }
 
     /**
      * @param mixed $eventUuid Event UUID
      * @param mixed $guestCode Guest code
      */
-    public function updateGuestEmailOptInStatus(mixed $eventUuid, mixed $guestCode): Response
-    {
-        return $this->connector->send(new UpdateGuestEmailOptInStatus($eventUuid, $guestCode));
-    }
-
-    /**
-     * @param mixed $eventUuid Event UUID
-     */
-    public function validateGuestCode(mixed $eventUuid): Response
-    {
-        return $this->connector->send(new ValidateGuestCode($eventUuid));
-    }
-
-    /**
-     * @param mixed $eventUuid Event UUID
-     * @param mixed $guestCode Guest code
-     */
-    public function createTemporaryUpload(mixed $eventUuid, mixed $guestCode): Response
-    {
-        return $this->connector->send(new CreateTemporaryUpload($eventUuid, $guestCode));
+    public function createTemporaryUpload(
+        mixed $eventUuid,
+        mixed $guestCode,
+        string $uuid,
+        string $key,
+        string $bucket,
+        string $name,
+        int $size,
+        string $contentType,
+    ): Response {
+        return $this->connector->send(new CreateTemporaryUpload($eventUuid, $guestCode, $uuid, $key, $bucket, $name, $size, $contentType));
     }
 }
