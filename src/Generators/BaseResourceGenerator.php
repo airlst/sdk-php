@@ -5,11 +5,10 @@ declare(strict_types=1);
 namespace AirLST\SdkPhp\Builder\Generators;
 
 use Crescat\SaloonSdkGenerator\Data\Generator\ApiSpecification;
-use Crescat\SaloonSdkGenerator\Generator;
 use Nette\PhpGenerator\ClassType;
 use Nette\PhpGenerator\PhpFile;
 
-class BaseResourceGenerator extends Generator
+class BaseResourceGenerator extends AbstractGenerator
 {
     public function generate(ApiSpecification $specification): PhpFile|array
     {
@@ -21,7 +20,7 @@ class BaseResourceGenerator extends Generator
             ->setProtected();
 
         $classFile = new PhpFile();
-        $classFile->addNamespace("{$this->config->namespace}")
+        $classFile->addNamespace("{$this->config()->namespace}")
             ->addUse(\AirLST\SdkPhp\CoreApi::class)
             ->add($classType);
 

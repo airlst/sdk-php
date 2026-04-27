@@ -79,7 +79,7 @@ class BuildCommand extends Command
             requestGenerator: new RequestGenerator($config),
             resourceGenerator: new ResourceGenerator($config),
             connectorGenerator: new ConnectorGenerator($config),
-            baseResourceGenerator: new BaseResourceGenerator($config),
+            additionalGenerators: [new BaseResourceGenerator($config)],
         );
 
         Factory::registerParser(self::TYPE, OpenApiParser::class);
@@ -98,9 +98,11 @@ class BuildCommand extends Command
             $this->dumpToFile($result->connectorClass);
         }
 
-        $this->info("\nBase Resource:");
-        if ($result->resourceBaseClass instanceof PhpFile) {
-            $this->dumpToFile($result->resourceBaseClass);
+        $this->info("\nAdditional Files:");
+        foreach ($result->additionalFiles as $additionalFile) {
+            if ($additionalFile instanceof PhpFile) {
+                $this->dumpToFile($additionalFile);
+            }
         }
 
         $this->info("\nResources:");

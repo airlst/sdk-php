@@ -7,7 +7,6 @@ namespace AirLST\SdkPhp\Builder\Generators;
 use AirLST\SdkPhp\Paginator;
 use Crescat\SaloonSdkGenerator\Data\Generator\ApiSpecification;
 use Crescat\SaloonSdkGenerator\Data\Generator\Endpoint;
-use Crescat\SaloonSdkGenerator\Generator;
 use Crescat\SaloonSdkGenerator\Helpers\NameHelper;
 use Exception;
 use Nette\PhpGenerator\ClassType;
@@ -19,7 +18,7 @@ use Saloon\PaginationPlugin\Contracts\HasPagination;
 use function is_null;
 use function sprintf;
 
-class ConnectorGenerator extends Generator
+class ConnectorGenerator extends AbstractGenerator
 {
     public function generate(ApiSpecification $specification): PhpFile|array
     {
@@ -28,7 +27,14 @@ class ConnectorGenerator extends Generator
 
     protected function generateConnectorClass(ApiSpecification $specification): ?PhpFile
     {
-        $classType = new ClassType($this->config->connectorName);
+        $config = $this->config();
+        $connectorName = $config->connectorName;
+
+        if ($connectorName === null) {
+            throw new Exception('Connector name is required in the configuration.');
+        }
+
+        $classType = new ClassType($connectorName);
         $classType->setExtends(Connector::class);
         $classType->setImplements([HasPagination::class]);
 
@@ -81,21 +87,21 @@ class ConnectorGenerator extends Generator
 
         $namespace = $classFile
             ->setStrictTypes()
-            ->addNamespace("{$this->config->namespace}")
+            ->addNamespace("{$config->namespace}")
             ->addUse(Connector::class)
             ->addUse(Request::class)
             ->addUse(Paginator::class)
             ->addUse(HasPagination::class);
 
         $collections = collect($specification->endpoints)
-            ->map(fn (Endpoint $endpoint): string => NameHelper::connectorClassName($endpoint->collection !== null && $endpoint->collection !== '' && $endpoint->collection !== '0' ? $endpoint->collection : $this->config->fallbackResourceName)) // @phpstan-ignore-line
+            ->map(fn (Endpoint $endpoint): string => NameHelper::connectorClassName($endpoint->collection !== null && $endpoint->collection !== '' && $endpoint->collection !== '0' ? $endpoint->collection : $config->fallbackResourceName)) // @phpstan-ignore-line
             ->unique()
             ->sort()
             ->all();
 
         foreach ($collections as $collection) {
             $resourceClassName = NameHelper::connectorClassName($collection);
-            $resourceFQN = "{$this->config->namespace}\\{$this->config->resourceNamespaceSuffix}\\{$resourceClassName}";
+            $resourceFQN = "{$config->namespace}\\{$config->resourceNamespaceSuffix}\\{$resourceClassName}";
 
             $namespace->addUse($resourceFQN);
 

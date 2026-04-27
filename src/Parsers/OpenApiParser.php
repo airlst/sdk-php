@@ -76,17 +76,13 @@ class OpenApiParser extends Parser
     protected function resolveAllOfProperties(Schema $schema): array
     {
         $properties = [];
-        if ($schema->allOf !== null) {
-            foreach ($schema->allOf as $subSchema) {
-                $props = $this->resolveAllOfProperties($this->resolveRef($subSchema)); // @phpstan-ignore-line
-                $properties = array_merge($properties, $props);
-            }
-        }
-        if ($schema->properties !== null) {
-            return array_merge($properties, $schema->properties);
+
+        foreach ($schema->allOf as $subSchema) {
+            $props = $this->resolveAllOfProperties($this->resolveRef($subSchema)); // @phpstan-ignore-line
+            $properties = array_merge($properties, $props);
         }
 
-        return $properties;
+        return array_merge($properties, $schema->properties);
     }
 
     protected function resolveRef(Schema $schema): Schema

@@ -7,7 +7,6 @@ namespace AirLST\SdkPhp\Builder\Generators;
 use Crescat\SaloonSdkGenerator\Data\Generator\ApiSpecification;
 use Crescat\SaloonSdkGenerator\Data\Generator\Endpoint;
 use Crescat\SaloonSdkGenerator\Data\Generator\Parameter;
-use Crescat\SaloonSdkGenerator\Generator;
 use Crescat\SaloonSdkGenerator\Helpers\MethodGeneratorHelper;
 use Crescat\SaloonSdkGenerator\Helpers\NameHelper;
 use Crescat\SaloonSdkGenerator\Helpers\Utils;
@@ -29,7 +28,7 @@ use function in_array;
 use function is_null;
 use function sprintf;
 
-class RequestGenerator extends Generator
+class RequestGenerator extends AbstractGenerator
 {
     public function generate(ApiSpecification $specification): PhpFile|array
     {
@@ -44,7 +43,8 @@ class RequestGenerator extends Generator
 
     protected function generateRequestClass(Endpoint $endpoint): PhpFile
     {
-        $collectionName = $endpoint->collection !== null && $endpoint->collection !== '' && $endpoint->collection !== '0' ? $endpoint->collection : $this->config->fallbackResourceName;
+        $config = $this->config();
+        $collectionName = $endpoint->collection !== null && $endpoint->collection !== '' && $endpoint->collection !== '0' ? $endpoint->collection : $config->fallbackResourceName;
 
         if (is_null($collectionName)) {
             throw new Exception('Failed to set a collection name for request class.');
@@ -58,7 +58,7 @@ class RequestGenerator extends Generator
         $classFile = new PhpFile();
         $namespace = $classFile
             ->setStrictTypes()
-            ->addNamespace("{$this->config->namespace}\\{$this->config->requestNamespaceSuffix}\\{$resourceName}")
+            ->addNamespace("{$config->namespace}\\{$config->requestNamespaceSuffix}\\{$resourceName}")
             ->addUse(Paginatable::class);
 
         $classType->setExtends(Request::class)
@@ -107,7 +107,7 @@ class RequestGenerator extends Generator
         // Priority 2. - Body Parameters
         if ($endpoint->bodyParameters !== []) {
             $bodyParams = collect($endpoint->bodyParameters)
-                ->reject(fn (Parameter $parameter): bool => in_array($parameter->name, $this->config->ignoredBodyParams, true))
+                ->reject(fn (Parameter $parameter): bool => in_array($parameter->name, $config->ignoredBodyParams, true))
                 ->values()
                 ->toArray();
 
@@ -121,7 +121,7 @@ class RequestGenerator extends Generator
         // Priority 3. - Query Parameters
         if ($endpoint->queryParameters !== []) {
             $queryParams = collect($endpoint->queryParameters)
-                ->reject(fn (Parameter $parameter): bool => in_array($parameter->name, $this->config->ignoredQueryParams, true))
+                ->reject(fn (Parameter $parameter): bool => in_array($parameter->name, $config->ignoredQueryParams, true))
                 ->values();
 
             if ($queryParams->contains(fn (Parameter $parameter): bool => $parameter->name === 'page')) {

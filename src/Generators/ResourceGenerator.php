@@ -8,7 +8,6 @@ use AirLST\SdkPhp\Paginator;
 use Crescat\SaloonSdkGenerator\Data\Generator\ApiSpecification;
 use Crescat\SaloonSdkGenerator\Data\Generator\Endpoint;
 use Crescat\SaloonSdkGenerator\Data\Generator\Parameter;
-use Crescat\SaloonSdkGenerator\Generator;
 use Crescat\SaloonSdkGenerator\Helpers\NameHelper;
 use Nette\InvalidStateException;
 use Nette\PhpGenerator\ClassType;
@@ -21,7 +20,7 @@ use function implode;
 use function in_array;
 use function sprintf;
 
-class ResourceGenerator extends Generator
+class ResourceGenerator extends AbstractGenerator
 {
     public function generate(ApiSpecification $specification): PhpFile|array
     {
@@ -33,16 +32,17 @@ class ResourceGenerator extends Generator
      */
     public function generateResourceClass(string $resourceName, array $endpoints): PhpFile
     {
+        $config = $this->config();
         $classType = new ClassType($resourceName);
 
-        $classType->setExtends("{$this->config->namespace}\\Resource");
+        $classType->setExtends("{$config->namespace}\\Resource");
 
         $classFile = new PhpFile();
         $classFile->setStrictTypes();
 
         $namespace = $classFile
-            ->addNamespace("{$this->config->namespace}\\{$this->config->resourceNamespaceSuffix}")
-            ->addUse("{$this->config->namespace}\\Resource");
+            ->addNamespace("{$config->namespace}\\{$config->resourceNamespaceSuffix}")
+            ->addUse("{$config->namespace}\\Resource");
 
         $duplicateCounter = 1;
 
@@ -52,7 +52,7 @@ class ResourceGenerator extends Generator
             $requestClassName = NameHelper::resourceClassName($endpoint->name);
             $methodName = NameHelper::safeVariableName($requestClassName);
             $requestClassNameAlias = $requestClassName === $resourceName ? "{$requestClassName}Request" : null;
-            $requestClassFQN = "{$this->config->namespace}\\{$this->config->requestNamespaceSuffix}\\{$resourceName}\\{$requestClassName}";
+            $requestClassFQN = "{$config->namespace}\\{$config->requestNamespaceSuffix}\\{$resourceName}\\{$requestClassName}";
 
             $namespace
                 ->addUse(Response::class)
@@ -84,7 +84,7 @@ class ResourceGenerator extends Generator
             }
 
             foreach ($endpoint->bodyParameters as $parameter) {
-                if (in_array($parameter->name, $this->config->ignoredBodyParams, true)) {
+                if (in_array($parameter->name, $config->ignoredBodyParams, true)) {
                     continue;
                 }
 
@@ -93,7 +93,7 @@ class ResourceGenerator extends Generator
             }
 
             foreach ($endpoint->queryParameters as $parameter) {
-                if (in_array($parameter->name, $this->config->ignoredQueryParams, true)) {
+                if (in_array($parameter->name, $config->ignoredQueryParams, true)) {
                     continue;
                 }
                 $this->addPropertyToMethod($method, $parameter);
@@ -127,9 +127,10 @@ class ResourceGenerator extends Generator
     protected function generateResourceClasses(ApiSpecification $specification): array
     {
         $classes = [];
+        $config = $this->config();
 
         $groupedByCollection = collect($specification->endpoints)->groupBy(fn (Endpoint $endpoint): string => NameHelper::resourceClassName(
-            $endpoint->collection !== null && $endpoint->collection !== '' && $endpoint->collection !== '0' ? $endpoint->collection : $this->config->fallbackResourceName // @phpstan-ignore-line
+            $endpoint->collection !== null && $endpoint->collection !== '' && $endpoint->collection !== '0' ? $endpoint->collection : $config->fallbackResourceName // @phpstan-ignore-line
         ));
 
         foreach ($groupedByCollection as $collection => $items) {
