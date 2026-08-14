@@ -19,12 +19,12 @@ class ValidateGuestCode extends Request implements HasBody
     protected Method $method = Method::POST;
 
     /**
-     * @param mixed       $eventUuid Event UUID
-     * @param string|null $code      The guest code
+     * @param mixed  $eventUuid Event UUID
+     * @param string $code      The guest code
      */
     public function __construct(
         protected mixed $eventUuid,
-        protected ?string $code = null,
+        protected string $code,
     ) {}
 
     public function resolveEndpoint(): string

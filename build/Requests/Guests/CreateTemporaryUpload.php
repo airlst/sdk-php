@@ -19,18 +19,19 @@ class CreateTemporaryUpload extends Request implements HasBody
     protected Method $method = Method::POST;
 
     /**
-     * @param mixed $eventUuid Event UUID
-     * @param mixed $guestCode Guest code
+     * @param mixed       $eventUuid        Event UUID
+     * @param string|null $uuid             Optional UUID for the media record. Must be unique within the media table.
+     * @param array|null  $customProperties optional custom properties to store on the media record
      */
     public function __construct(
         protected mixed $eventUuid,
-        protected mixed $guestCode,
-        protected string $uuid,
-        protected string $key,
-        protected string $bucket,
-        protected string $name,
-        protected int $size,
-        protected string $contentType,
+        protected ?string $uuid = null,
+        protected string $key = '',
+        protected string $bucket = '',
+        protected string $name = '',
+        protected int $size = 0,
+        protected string $contentType = '',
+        protected ?array $customProperties = null,
     ) {}
 
     public function resolveEndpoint(): string
@@ -47,6 +48,7 @@ class CreateTemporaryUpload extends Request implements HasBody
             'name' => $this->name,
             'size' => $this->size,
             'content_type' => $this->contentType,
+            'custom_properties' => $this->customProperties,
         ]);
     }
 }

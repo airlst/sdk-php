@@ -62,7 +62,7 @@ class ConnectorGenerator extends AbstractGenerator
         $classType->addProperty('baseUrl')
             ->setType('string')
             ->setProtected()
-            ->setValue($specification->baseUrl);
+            ->setValue($specification->baseUrl->url);
 
         $classType->addMethod('resolveBaseUrl')
             ->setReturnType('string')

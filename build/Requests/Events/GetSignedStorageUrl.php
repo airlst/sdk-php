@@ -12,7 +12,7 @@ use Saloon\Http\Request;
  */
 class GetSignedStorageUrl extends Request
 {
-    protected Method $method = Method::GET;
+    protected Method $method = Method::PUT;
 
     /**
      * @param mixed $eventUuid Event UUID
