@@ -44,7 +44,7 @@ class RequestGenerator extends AbstractGenerator
     protected function generateRequestClass(Endpoint $endpoint): PhpFile
     {
         $config = $this->config();
-        $collectionName = $endpoint->collection !== null && $endpoint->collection !== '' && $endpoint->collection !== '0' ? $endpoint->collection : $config->fallbackResourceName;
+        $collectionName = in_array($endpoint->collection, [null, '', '0'], true) ? $config->fallbackResourceName : $endpoint->collection;
 
         if (is_null($collectionName)) {
             throw new Exception('Failed to set a collection name for request class.');

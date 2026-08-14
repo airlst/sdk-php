@@ -24,7 +24,8 @@
     "mockery/mockery": "^1.4",
     "orchestra/testbench": "^9.0 || ^10.0",
     "phpstan/phpstan": "^2.1",
-    "phpunit/phpunit": "^8.0 || ^9.0 || ^10.0",
+    "phpunit/phpunit": "^11.5 || ^12.0",
+    "rector/rector": "~2.5.0",
     "rector/swiss-knife": "^2.2"
   },
   "minimum-stability": "stable",
@@ -52,10 +53,10 @@
   },
   "scripts": {
     "build": [
-        "php build.php",
-        "@composer rector",
-        "@composer cs-fixer",
-        "@composer phpstan"
+      "php build.php",
+      "@composer rector",
+      "@composer cs-fixer",
+      "@composer phpstan"
     ],
     "ci": [
       "@composer dump --strict-psr",

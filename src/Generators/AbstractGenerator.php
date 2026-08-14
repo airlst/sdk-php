@@ -12,7 +12,7 @@ abstract class AbstractGenerator extends Generator
 {
     protected function config(): Config
     {
-        if ($this->config === null) {
+        if (! $this->config instanceof Config) {
             throw new LogicException(static::class . ' requires a Config instance.');
         }
 
