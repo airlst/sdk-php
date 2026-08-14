@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AirLST\SdkPhp\Resources;
 
+use AirLST\SdkPhp\Paginator;
 use AirLST\SdkPhp\Requests\BookableGroups\DeleteBookablesReservation;
 use AirLST\SdkPhp\Requests\BookableGroups\GetAvailabilities;
 use AirLST\SdkPhp\Requests\BookableGroups\ListBookableGroups;
@@ -18,8 +19,9 @@ class BookableGroups extends Resource
      * @param mixed  $eventUuid         Event UUID
      * @param mixed  $bookableGroupUuid BookableGroup UUID
      * @param mixed  $bookableUuid      Bookable object UUID
-     * @param string $startDate         Start date
-     * @param string $endDate           End date
+     * @param string $startDate         Start of the window to list availabilities for. An absolute instant: a value without a zone is read as UTC, not as event-local time.
+     * @param string $endDate           End of the window to list availabilities for. An absolute instant: a value without a zone is read as UTC, not as event-local time.
+     * @param string $guestCode         Optional guest code used to compute the guest-specific reservations and remaining capacity
      */
     public function getAvailabilities(
         mixed $eventUuid,
@@ -27,8 +29,9 @@ class BookableGroups extends Resource
         mixed $bookableUuid,
         string $startDate,
         string $endDate,
+        ?string $guestCode = null,
     ): Response {
-        return $this->connector->send(new GetAvailabilities($eventUuid, $bookableGroupUuid, $bookableUuid, $startDate, $endDate));
+        return $this->connector->send(new GetAvailabilities($eventUuid, $bookableGroupUuid, $bookableUuid, $startDate, $endDate, $guestCode));
     }
 
     /**
@@ -43,19 +46,27 @@ class BookableGroups extends Resource
 
     /**
      * @param mixed $eventUuid Event UUID
+     * @param int   $perPage   Number of items per page. Defaults to 100.
+     * @param int   $page      Page number
      */
-    public function listBookableGroups(mixed $eventUuid): Response
+    public function listBookableGroups(mixed $eventUuid, ?int $perPage = null, ?int $page = null): Paginator
     {
-        return $this->connector->send(new ListBookableGroups($eventUuid));
+        return $this->connector->paginate(new ListBookableGroups($eventUuid, $perPage, $page));
     }
 
     /**
      * @param mixed $eventUuid         Event UUID
      * @param mixed $bookableGroupUuid BookableGroup UUID
+     * @param int   $perPage           Number of items per page. Defaults to 100.
+     * @param int   $page              Page number
      */
-    public function listBookablesForGroup(mixed $eventUuid, mixed $bookableGroupUuid): Response
-    {
-        return $this->connector->send(new ListBookablesForGroup($eventUuid, $bookableGroupUuid));
+    public function listBookablesForGroup(
+        mixed $eventUuid,
+        mixed $bookableGroupUuid,
+        ?int $perPage = null,
+        ?int $page = null,
+    ): Paginator {
+        return $this->connector->paginate(new ListBookablesForGroup($eventUuid, $bookableGroupUuid, $perPage, $page));
     }
 
     /**
