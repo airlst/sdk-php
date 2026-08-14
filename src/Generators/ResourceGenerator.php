@@ -130,7 +130,7 @@ class ResourceGenerator extends AbstractGenerator
         $config = $this->config();
 
         $groupedByCollection = collect($specification->endpoints)->groupBy(fn (Endpoint $endpoint): string => NameHelper::resourceClassName(
-            $endpoint->collection !== null && $endpoint->collection !== '' && $endpoint->collection !== '0' ? $endpoint->collection : $config->fallbackResourceName // @phpstan-ignore-line
+            in_array($endpoint->collection, [null, '', '0'], true) ? $config->fallbackResourceName : $endpoint->collection // @phpstan-ignore-line
         ));
 
         foreach ($groupedByCollection as $collection => $items) {

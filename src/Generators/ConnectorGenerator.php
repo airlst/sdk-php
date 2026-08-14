@@ -15,6 +15,7 @@ use Saloon\Http\Connector;
 use Saloon\Http\Request;
 use Saloon\PaginationPlugin\Contracts\HasPagination;
 
+use function in_array;
 use function is_null;
 use function sprintf;
 
@@ -30,7 +31,7 @@ class ConnectorGenerator extends AbstractGenerator
         $config = $this->config();
         $connectorName = $config->connectorName;
 
-        if ($connectorName === null) {
+        if (is_null($connectorName)) {
             throw new Exception('Connector name is required in the configuration.');
         }
 
@@ -38,12 +39,12 @@ class ConnectorGenerator extends AbstractGenerator
         $classType->setExtends(Connector::class);
         $classType->setImplements([HasPagination::class]);
 
-        if ($specification->name !== null && $specification->name !== '' && $specification->name !== '0') {
+        if (! in_array($specification->name, [null, '', '0'], true)) {
             $classType->addComment($specification->name);
         }
 
-        if ($specification->description !== null && $specification->description !== '' && $specification->description !== '0') {
-            $classType->addComment($specification->name !== null && $specification->name !== '' && $specification->name !== '0' ? "\n{$specification->description}" : $specification->description);
+        if (! in_array($specification->description, [null, '', '0'], true)) {
+            $classType->addComment(in_array($specification->name, [null, '', '0'], true) ? $specification->description : "\n{$specification->description}");
         }
 
         $classFile = new PhpFile();
@@ -94,7 +95,7 @@ class ConnectorGenerator extends AbstractGenerator
             ->addUse(HasPagination::class);
 
         $collections = collect($specification->endpoints)
-            ->map(fn (Endpoint $endpoint): string => NameHelper::connectorClassName($endpoint->collection !== null && $endpoint->collection !== '' && $endpoint->collection !== '0' ? $endpoint->collection : $config->fallbackResourceName)) // @phpstan-ignore-line
+            ->map(fn (Endpoint $endpoint): string => NameHelper::connectorClassName(in_array($endpoint->collection, [null, '', '0'], true) ? $config->fallbackResourceName : $endpoint->collection)) // @phpstan-ignore-line
             ->unique()
             ->sort()
             ->all();

@@ -33,8 +33,11 @@ use function str_replace;
 class BuildCommand extends Command
 {
     protected const string NAMESPACE = 'AirLST\SdkPhp';
+
     protected const string TYPE = 'openapi';
+
     protected $signature = 'airlst-sdk-php:build {spec-url=https://airlst.app/openapi.yml} {--no-download}';
+
     protected $description = 'BuildCommand SDK';
 
     public function handle(): void
